@@ -9,6 +9,8 @@
     {
         private static bool _forceExpando = false;
 
+        private static TaskScheduler _scheduler = TaskScheduler.Default;
+
         private static readonly ConcurrentDictionary<string, Pipeline> Pipelines =
             new ConcurrentDictionary<string, Pipeline>();
 
@@ -18,6 +20,15 @@
         public static void ForceExpando()
         {
             _forceExpando = true;
+        }
+
+        /// <summary>
+        /// Sets a TaskScheduler to be used.
+        /// </summary>
+        /// <param name="scheduler">TaskScheduler to use</param>
+        public static void WithScheduler(TaskScheduler scheduler)
+        {
+            _scheduler = scheduler;
         }
 
         /// <summary>
@@ -40,7 +51,7 @@
             if (!Pipelines.TryGetValue(id, out pipeline))
                 throw new PipelineNotFoundException(id);
 
-            return pipeline.Run(input, progress);
+            return pipeline.Run(input, progress, _scheduler);
         }
 
         /// <summary>

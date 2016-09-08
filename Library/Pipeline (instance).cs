@@ -24,7 +24,7 @@
             return this;
         }
 
-        internal Task<PipelineResult> Run(object input, Action<PipelineEvent> progress)
+        internal Task<PipelineResult> Run(object input, Action<PipelineEvent> progress, TaskScheduler scheduler)
         {
             return Task.Factory.StartNew<PipelineResult>(() =>
             {
@@ -146,7 +146,7 @@
                 }
 
                 return new PipelineResult(output, results);
-            });
+            }, CancellationToken.None, TaskCreationOptions.None, scheduler);
         }
     }
 }

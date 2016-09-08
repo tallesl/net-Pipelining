@@ -4,7 +4,7 @@
 
     /// <summary>
     /// Base class for pipeline events.
-    /// </summary
+    /// </summary>
     [Serializable]
     public abstract class PipelineEvent
     {
