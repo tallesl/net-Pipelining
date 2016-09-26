@@ -18,14 +18,20 @@
             Pipes = new List<PipeResult>();
         }
 
-        internal PipelineResult(object output, IList<PipeResult> results)
+        internal PipelineResult(string id, object output, IList<PipeResult> results)
         {
+            Id = id;
             Output = output;
             Success = results.All(r => r.Exception == null);
             ElapsedTime = results.Any() ? results.Last(r => r.Ended != null).Ended.Value -
                     results.First().Started.Value : TimeSpan.Zero;
             Pipes = results;
         }
+
+        /// <summary>
+        /// Pipeline ID.
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// Output of the run.

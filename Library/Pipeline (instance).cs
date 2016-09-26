@@ -11,7 +11,15 @@
     /// </summary>
     public sealed partial class Pipeline
     {
-        private readonly IList<IPipe> _pipes = new List<IPipe>();
+        private readonly string _id;
+
+        private readonly IList<IPipe> _pipes;
+
+        internal Pipeline(string id)
+        {
+            _id = id;
+            _pipes = new List<IPipe>();
+        }
 
         /// <summary>
         /// Sets the next pipe in the pipeline chain.
@@ -145,7 +153,7 @@
                     }
                 }
 
-                return new PipelineResult(output, results);
+                return new PipelineResult(_id, output, results);
             }, CancellationToken.None, TaskCreationOptions.None, scheduler);
         }
     }

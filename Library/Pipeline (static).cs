@@ -61,7 +61,7 @@
         /// <returns>The registered pipeline instance</returns>
         public static Pipeline Register(string id)
         {
-            var pipeline = new Pipeline();
+            var pipeline = new Pipeline(id);
 
             if (!Pipelines.TryAdd(id, pipeline))
                 throw new PipelineAlreadyRegisteredException(id);
