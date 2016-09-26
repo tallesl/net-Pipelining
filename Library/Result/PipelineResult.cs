@@ -1,4 +1,4 @@
-﻿namespace PipeliningLibrary
+﻿﻿namespace PipeliningLibrary
 {
     using System;
     using System.Collections.Generic;
@@ -52,5 +52,36 @@
         /// Individual pipe results.
         /// </summary>
         public IList<PipeResult> Pipes { get; set; }
+
+        /// <summary>
+        /// Returns a serialize-friendly result.
+        /// </summary>
+        /// <returns>A serialize-friendly result</returns>
+        public FriendlyPipelineResult Friendly()
+        {
+            object output;
+
+            if (Output == null)
+            {
+                output = null;
+            }
+            else if (Output.GetType().IsSerializable)
+            {
+                output = Output;
+            }
+            else
+            {
+                output = "The output object is not seriazable (System.Type.IsSerializable).";
+            }
+
+            return new FriendlyPipelineResult
+            {
+                Id = Id,
+                Output = output,
+                Success = Success,
+                ElapsedTime = ElapsedTime,
+                Pipes = Pipes.Select((p, i) => p.Friendly(i)).ToList(),
+            };
+        }
     }
 }

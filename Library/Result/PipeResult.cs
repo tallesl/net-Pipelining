@@ -27,5 +27,22 @@
         /// Exception caught while running it.
         /// </summary>
         public Exception Exception { get; set; }
+
+        /// <summary>
+        /// Returns a serialize-friendly result.
+        /// </summary>
+        /// <param name="position">Position of the pipe in the pipeline</param>
+        /// <returns>A serialize-friendly result</returns>
+        public FriendlyPipeResult Friendly(int position)
+        {
+            return new FriendlyPipeResult
+            {
+                Position = position,
+                Pipe = Pipe.ToString(),
+                Started = Started,
+                Ended = Ended,
+                Exception = Exception,
+            };
+        }
     }
 }
