@@ -31,6 +31,6 @@
         /// <summary>
         /// Exception caught while running it.
         /// </summary>
-        public Exception Exception { get; set; }
+        public string Exception { get; set; }
     }
 }

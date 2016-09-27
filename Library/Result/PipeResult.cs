@@ -41,7 +41,7 @@
                 Pipe = Pipe.ToString(),
                 Started = Started,
                 Ended = Ended,
-                Exception = Exception,
+                Exception = Exception.ToString(),
             };
         }
     }
