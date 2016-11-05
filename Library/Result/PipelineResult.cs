@@ -54,6 +54,17 @@
         public IList<PipeResult> Pipes { get; set; }
 
         /// <summary>
+        /// Returns the exception of this result, if any.
+        /// If the success flag is true should return null.
+        /// </summary>
+        /// <returns>The exception of this result, if any</returns>
+        public Exception Exception()
+        {
+            var result = Pipes.SingleOrDefault(p => p.Exception != null);
+            return result == null ? null : result.Exception;
+        }
+
+        /// <summary>
         /// Returns a serialize-friendly result.
         /// </summary>
         /// <returns>A serialize-friendly result</returns>
