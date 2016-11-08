@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.Linq;
+    using XpandoLibrary;
 
     /// <summary>
     /// Result from a pipeline run.
@@ -10,6 +12,8 @@
     [Serializable]
     public class PipelineResult
     {
+        private const string _notSerializableMessage = "The object is not seriazable (System.Type.IsSerializable).";
+
         /// <summary>
         /// Ctor.
         /// </summary>
@@ -72,18 +76,29 @@
         {
             object output;
 
+            // if it's null
             if (Output == null)
-            {
+
+                // is also null on the friendly result
                 output = null;
-            }
+
+            // if it's an ExpandoObject
+            else if (Output is ExpandoObject)
+
+                // we navigate the whole property tree replacing with the "not serializable" message when needed
+                output = CopyWithSerializableOnly((ExpandoObject)Output);
+
+            // if it's serializable
             else if (Output.GetType().IsSerializable)
-            {
+
+                // then we use it
                 output = Output;
-            }
+
+            // if it's not null, not an ExpandoObject and not serializable
             else
-            {
-                output = "The output object is not seriazable (System.Type.IsSerializable).";
-            }
+
+                // we use the "not serializable" message instead
+                output = _notSerializableMessage;
 
             return new FriendlyPipelineResult
             {
@@ -93,6 +108,39 @@
                 ElapsedTime = ElapsedTime,
                 Pipes = Pipes.Select((p, i) => p.Friendly(i)).ToList(),
             };
+        }
+
+        private static ExpandoObject CopyWithSerializableOnly(ExpandoObject expando)
+        {
+            Action<ExpandoObject> replace = null;
+            replace = e =>
+            {
+                // using it as a dictionary
+                var dict = (IDictionary<string, object>)e;
+
+                // for each key value pair
+                dict.ToList().ForEach(kvp =>
+                {
+                    var innerExpando = kvp.Value as ExpandoObject;
+
+                    // if the current value is an ExpandoObject
+                    if (innerExpando != null)
+
+                        // recursion!
+                        replace(e);
+
+                    // if it's not an Expando and it's not serializable
+                    else if (!kvp.Value.GetType().IsSerializable)
+
+                        // we use the "not serializable" message instead
+                        dict[kvp.Key] = _notSerializableMessage;
+                });
+            };
+
+            var copy = expando.DeepCopy();
+            replace(copy);
+
+            return copy;
         }
     }
 }
