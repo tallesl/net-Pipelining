@@ -37,18 +37,21 @@
         /// <param name="id">Pipeline identifier</param>
         /// <param name="input">Input for the pipeline</param>
         /// <param name="progress">Optional action to be called with pipeline events</param>
+        /// <param name="scheduler">TaskScheduler to use for this run</param>
         /// <returns>A Task of the running pipeline with gives a PipelineResult</returns>
         public static Task<PipelineResult> Run(string id, object input = null,
-            Action<PipelineEvent> progress = null)
+            Action<PipelineEvent> progress = null, TaskScheduler scheduler = null)
         {
+            var pipeline = Get(id);
+
             if (_forceExpando)
                 input = (input ?? new object()).ToExpando();
 
             progress = progress ?? (p => { });
 
-            var pipeline = Get(id);
+            scheduler = scheduler ?? _scheduler;
 
-            return pipeline.Run(input, progress, _scheduler);
+            return pipeline.Run(input, progress, scheduler);
         }
 
         /// <summary>
