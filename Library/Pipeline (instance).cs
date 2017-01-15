@@ -13,7 +13,7 @@
     {
         private readonly string _id;
 
-        private readonly IList<IPipe> _pipes;
+        internal readonly IList<IPipe> _pipes;
 
         internal Pipeline(string id)
         {
@@ -29,6 +29,21 @@
         public Pipeline Pipe<T>() where T : IPipe, new()
         {
             _pipes.Add(new T());
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the pipes from the given pipeline and sets on this one.
+        /// </summary>
+        /// <param name="id">Id of the pipeline to get the pipes from</param>
+        /// <returns>This pipeline instance</returns>
+        public Pipeline Pipe(string id)
+        {
+            var pipeline = Get(id);
+
+            foreach (var pipe in pipeline._pipes)
+                _pipes.Add(pipe);
+
             return this;
         }
 

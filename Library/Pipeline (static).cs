@@ -46,10 +46,7 @@
 
             progress = progress ?? (p => { });
 
-            Pipeline pipeline;
-
-            if (!Pipelines.TryGetValue(id, out pipeline))
-                throw new PipelineNotFoundException(id);
+            var pipeline = Get(id);
 
             return pipeline.Run(input, progress, _scheduler);
         }
@@ -65,6 +62,16 @@
 
             if (!Pipelines.TryAdd(id, pipeline))
                 throw new PipelineAlreadyRegisteredException(id);
+
+            return pipeline;
+        }
+
+        internal static Pipeline Get(string id)
+        {
+            Pipeline pipeline;
+
+            if (!Pipelines.TryGetValue(id, out pipeline))
+                throw new PipelineNotFoundException(id);
 
             return pipeline;
         }
