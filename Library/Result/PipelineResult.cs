@@ -130,7 +130,7 @@
                         replace(e);
 
                     // if it's not an Expando and it's not serializable
-                    else if (!kvp.Value.GetType().IsSerializable)
+                    else if (kvp.Value != null && !kvp.Value.GetType().IsSerializable)
 
                         // we use the "not serializable" message instead
                         dict[kvp.Key] = _notSerializableMessage;
