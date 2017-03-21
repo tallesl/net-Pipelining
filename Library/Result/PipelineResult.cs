@@ -123,17 +123,23 @@
                 {
                     var innerExpando = kvp.Value as ExpandoObject;
 
-                    // if the current value is an ExpandoObject
-                    if (innerExpando != null)
+                    // if the current value is not an ExpandoObject
+                    if (innerExpando == null)
+                    {
+                        // if it's not serializable
+                        if (!kvp.Value.GetType().IsSerializable)
 
-                        // recursion!
-                        replace(e);
+                            // we use the "not serializable" message
+                            dict[kvp.Key] = _notSerializableMessage;
+                    }
+                    else
+                    {
+                        // if it's an ExpandoObject and is not empty
+                        if (!innerExpando.Empty())
 
-                    // if it's not an Expando and it's not serializable
-                    else if (kvp.Value != null && !kvp.Value.GetType().IsSerializable)
-
-                        // we use the "not serializable" message instead
-                        dict[kvp.Key] = _notSerializableMessage;
+                            // recursion!
+                            replace(innerExpando);
+                    }
                 });
             };
 

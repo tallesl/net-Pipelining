@@ -38,8 +38,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Xpando, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xpando.2.2.0\lib\Xpando.dll</HintPath>
+    <Reference Include="Xpando, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xpando.2.3.0\lib\Xpando.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
