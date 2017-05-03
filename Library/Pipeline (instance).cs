@@ -24,6 +24,17 @@
         /// <summary>
         /// Sets the next pipe in the pipeline chain.
         /// </summary>
+        /// <param name="pipe">The IPipe to set</typeparam>
+        /// <returns>This pipeline instance</returns>
+        public Pipeline Pipe(IPipe pipe)
+        {
+            _pipes.Add(pipe);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the next pipe in the pipeline chain.
+        /// </summary>
         /// <typeparam name="T">The IPipe to set</typeparam>
         /// <returns>This pipeline instance</returns>
         public Pipeline Pipe<T>() where T : IPipe, new()
