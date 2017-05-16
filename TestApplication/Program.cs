@@ -10,7 +10,7 @@
         static void Main(string[] args)
         {
             // initializing the pipeline
-            Pipeline.ForceExpando();
+            Pipeline.Expando();
             Pipeline.Register("open_issues")
                 .Pipe<GetUserRepositories>()
                 .Pipe<FilterOpenIssues>()

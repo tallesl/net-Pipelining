@@ -7,26 +7,26 @@
 
     public sealed partial class Pipeline
     {
-        private static bool _forceExpando = false;
+        private static bool _expando = false;
 
         private static TaskScheduler _scheduler = TaskScheduler.Default;
 
-        private static readonly ConcurrentDictionary<string, Pipeline> Pipelines =
+        private static readonly ConcurrentDictionary<string, Pipeline> _pipelines =
             new ConcurrentDictionary<string, Pipeline>();
 
         /// <summary>
         /// Forces the input object to be an ExpandoObject.
         /// </summary>
-        public static void ForceExpando()
+        public static void Expando()
         {
-            _forceExpando = true;
+            _expando = true;
         }
 
         /// <summary>
         /// Sets a TaskScheduler to be used.
         /// </summary>
         /// <param name="scheduler">TaskScheduler to use</param>
-        public static void WithScheduler(TaskScheduler scheduler)
+        public static void Scheduler(TaskScheduler scheduler)
         {
             _scheduler = scheduler;
         }
@@ -44,7 +44,7 @@
         {
             var pipeline = Get(id);
 
-            if (_forceExpando)
+            if (_expando)
                 input = (input ?? new object()).ToExpando();
 
             progress = progress ?? (p => { });
@@ -63,7 +63,7 @@
         {
             var pipeline = new Pipeline(id);
 
-            if (!Pipelines.TryAdd(id, pipeline))
+            if (!_pipelines.TryAdd(id, pipeline))
                 throw new PipelineAlreadyRegisteredException(id);
 
             return pipeline;
@@ -73,7 +73,7 @@
         {
             Pipeline pipeline;
 
-            if (!Pipelines.TryGetValue(id, out pipeline))
+            if (!_pipelines.TryGetValue(id, out pipeline))
                 throw new PipelineNotFoundException(id);
 
             return pipeline;
