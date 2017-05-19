@@ -13,22 +13,22 @@
     {
         private readonly string _id;
 
-        internal readonly IList<IPipe> _pipes;
+        internal readonly IList<PipeSpecifier> Pipes;
 
         internal Pipeline(string id)
         {
             _id = id;
-            _pipes = new List<IPipe>();
+            Pipes = new List<PipeSpecifier>();
         }
 
         /// <summary>
-        /// Sets the next pipe in the pipeline chain.
+        /// Gets the pipes from the given pipeline and sets on this one.
         /// </summary>
-        /// <param name="pipe">The IPipe to set</typeparam>
+        /// <param name="id">Id of the pipeline to get the pipes from</param>
         /// <returns>This pipeline instance</returns>
-        public Pipeline Pipe(IPipe pipe)
+        public Pipeline Pipe(string id)
         {
-            _pipes.Add(pipe);
+            Pipes.Add(new PipeSpecifier(id));
             return this;
         }
 
@@ -39,22 +39,18 @@
         /// <returns>This pipeline instance</returns>
         public Pipeline Pipe<T>() where T : IPipe, new()
         {
-            _pipes.Add(new T());
+            Pipes.Add(new PipeSpecifier(typeof(T)));
             return this;
         }
 
         /// <summary>
-        /// Gets the pipes from the given pipeline and sets on this one.
+        /// Sets the next pipe in the pipeline chain.
         /// </summary>
-        /// <param name="id">Id of the pipeline to get the pipes from</param>
+        /// <param name="pipe">The IPipe to set</typeparam>
         /// <returns>This pipeline instance</returns>
-        public Pipeline Pipe(string id)
+        public Pipeline Pipe(IPipe pipe)
         {
-            var pipeline = Get(id);
-
-            foreach (var pipe in pipeline._pipes)
-                _pipes.Add(pipe);
-
+            Pipes.Add(new PipeSpecifier(pipe));
             return this;
         }
 
@@ -65,10 +61,11 @@
                 object output = null;
                 var results = new List<PipeResult>();
 
-                for (var i = 0; i < _pipes.Count; ++i)
-                {
-                    var pipe = _pipes[i];
+                var i = 0;
+                var pipes = Pipes.SelectMany(p => p.Resolve());
 
+                foreach (var pipe in pipes)
+                {
                     if (results.Any(r => r.Exception != null))
                     {
                         #region not executed result
@@ -91,7 +88,7 @@
                             {
                                 Pipe = pipe.GetType(),
                                 Current = i,
-                                Total = _pipes.Count,
+                                Total = Pipes.Count,
                             }
                         );
 
@@ -111,7 +108,7 @@
                                         Pipe = pipe.GetType(),
                                         Message = message,
                                         Current = i,
-                                        Total = _pipes.Count,
+                                        Total = Pipes.Count,
                                     }
                                 )
                             );
@@ -140,7 +137,7 @@
                                 {
                                     Pipe = pipe.GetType(),
                                     Current = i,
-                                    Total = _pipes.Count,
+                                    Total = Pipes.Count,
                                 }
                             );
 
@@ -170,13 +167,15 @@
                                     Exception = e,
                                     Pipe = pipe.GetType(),
                                     Current = i,
-                                    Total = _pipes.Count,
+                                    Total = Pipes.Count,
                                 }
                             );
 
                             #endregion
                         }
                     }
+
+                    ++i;
                 }
 
                 return new PipelineResult(_id, output, results);

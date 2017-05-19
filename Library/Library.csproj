@@ -53,6 +53,7 @@
     <Compile Include="Pipeline %28instance%29.cs" />
     <Compile Include="Exception\PipelineNotFoundException.cs" />
     <Compile Include="Pipeline %28static%29.cs" />
+    <Compile Include="PipeSpecifier.cs" />
     <Compile Include="Result\PipelineResult.cs" />
     <Compile Include="Result\FriendlyPipelineResult.cs" />
     <Compile Include="Interface\IPipe.cs" />
