@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using XpandoLibrary;
 
@@ -32,6 +33,35 @@
         }
 
         /// <summary>
+        /// Returns an IEnumerable which each iteration runs the next pipe in the pipeline.
+        /// The "Current" property of the enumerable is the output of the last pipe run.
+        /// </summary>
+        /// <param name="id">Pipeline identifier</param>
+        /// <param name="input">Input for the pipeline</param>
+        /// <param name="progress">Optional action to be called with pipe progress messages</param>
+        /// <returns>An IEnumerable which each iteration runs the next pipe in the pipeline.</returns>
+        public static IEnumerable<object> GetEnumerable(string id, object input = null,
+            Action<string> progress = null)
+        {
+            return new PipeEnumerator(input, progress, Get(id).Pipes);
+        }
+
+        /// <summary>
+        /// Register a new pipeline.
+        /// </summary>
+        /// <param name="id">Pipeline identifier</param>
+        /// <returns>The registered pipeline instance</returns>
+        public static Pipeline Register(string id)
+        {
+            var pipeline = new Pipeline(id);
+
+            if (!_pipelines.TryAdd(id, pipeline))
+                throw new PipelineAlreadyRegisteredException(id);
+
+            return pipeline;
+        }
+
+        /// <summary>
         /// Runs the pipeline of the given identifier.
         /// </summary>
         /// <param name="id">Pipeline identifier</param>
@@ -52,21 +82,6 @@
             scheduler = scheduler ?? _scheduler;
 
             return pipeline.Run(input, progress, scheduler);
-        }
-
-        /// <summary>
-        /// Register a new pipeline.
-        /// </summary>
-        /// <param name="id">Pipeline identifier</param>
-        /// <returns>The registered pipeline instance</returns>
-        public static Pipeline Register(string id)
-        {
-            var pipeline = new Pipeline(id);
-
-            if (!_pipelines.TryAdd(id, pipeline))
-                throw new PipelineAlreadyRegisteredException(id);
-
-            return pipeline;
         }
 
         internal static Pipeline Get(string id)
