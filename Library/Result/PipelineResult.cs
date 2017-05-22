@@ -19,10 +19,10 @@
         /// </summary>
         public PipelineResult()
         {
-            Pipes = new List<PipeResult>();
+            Pipes = new PipeResult[0];
         }
 
-        internal PipelineResult(string id, object output, IList<PipeResult> results)
+        internal PipelineResult(string id, object output, PipeResult[] results)
         {
             Id = id;
             Output = output;
@@ -54,7 +54,7 @@
         /// <summary>
         /// Individual pipe results.
         /// </summary>
-        public IList<PipeResult> Pipes { get; set; }
+        public PipeResult[] Pipes { get; set; }
 
         /// <summary>
         /// Returns the exception of this result, if any.

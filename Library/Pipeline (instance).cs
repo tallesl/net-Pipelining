@@ -160,7 +160,7 @@
                     ++i;
                 }
 
-                return new PipelineResult(_id, output, results);
+                return new PipelineResult(_id, output, results.ToArray());
             }, CancellationToken.None, TaskCreationOptions.None, scheduler);
         }
     }
