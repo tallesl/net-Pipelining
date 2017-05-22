@@ -17,10 +17,5 @@
         /// Position of the pipe in the pipeline.
         /// </summary>
         public int Current { get; set; }
-
-        /// <summary>
-        /// Total of pipes in the pipeline.
-        /// </summary>
-        public int Total { get; set; }
     }
 }

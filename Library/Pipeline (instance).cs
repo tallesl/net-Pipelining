@@ -88,7 +88,6 @@
                             {
                                 Pipe = pipe.GetType(),
                                 Current = i,
-                                Total = Pipes.Count,
                             }
                         );
 
@@ -108,7 +107,6 @@
                                         Pipe = pipe.GetType(),
                                         Message = message,
                                         Current = i,
-                                        Total = Pipes.Count,
                                     }
                                 )
                             );
@@ -137,7 +135,6 @@
                                 {
                                     Pipe = pipe.GetType(),
                                     Current = i,
-                                    Total = Pipes.Count,
                                 }
                             );
 
@@ -167,7 +164,6 @@
                                     Exception = e,
                                     Pipe = pipe.GetType(),
                                     Current = i,
-                                    Total = Pipes.Count,
                                 }
                             );
 
