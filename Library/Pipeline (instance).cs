@@ -66,25 +66,57 @@
 
                 foreach (var pipe in pipes)
                 {
-                    if (results.Any(r => r.Exception != null))
+                    #region notifying start
+
+                    progress(
+                        new PipeStarted
+                        {
+                            Pipe = pipe.GetType(),
+                            Current = i,
+                        }
+                    );
+
+                    #endregion
+
+                    var start = DateTime.UtcNow;
+
+                    try
                     {
-                        #region not executed result
+                        #region running the pipe
+
+                        output = pipe.Run(
+                            input,
+                            (message) => progress(
+                                new PipeMessage
+                                {
+                                    Pipe = pipe.GetType(),
+                                    Message = message,
+                                    Current = i,
+                                }
+                            )
+                        );
+
+                        #endregion
+
+                        #region success result
 
                         results.Add(
                             new PipeResult
                             {
                                 Pipe = pipe.GetType(),
+                                Started = start,
+                                Ended = DateTime.UtcNow,
                             }
                         );
 
+                        input = output;
+
                         #endregion
-                    }
-                    else
-                    {
-                        #region notifying start
+
+                        #region notifying end
 
                         progress(
-                            new PipeStarted
+                            new PipeEnded
                             {
                                 Pipe = pipe.GetType(),
                                 Current = i,
@@ -92,83 +124,37 @@
                         );
 
                         #endregion
+                    }
+                    catch (Exception e)
+                    {
+                        #region error result
 
-                        var start = DateTime.UtcNow;
+                        results.Add(
+                            new PipeResult
+                            {
+                                Pipe = pipe.GetType(),
+                                Started = start,
+                                Ended = DateTime.UtcNow,
+                                Exception = e,
+                            }
+                        );
 
-                        try
-                        {
-                            #region running the pipe
+                        #endregion
 
-                            output = pipe.Run(
-                                input,
-                                (message) => progress(
-                                    new PipeMessage
-                                    {
-                                        Pipe = pipe.GetType(),
-                                        Message = message,
-                                        Current = i,
-                                    }
-                                )
-                            );
+                        #region notifying exception
 
-                            #endregion
+                        progress(
+                            new PipeException
+                            {
+                                Exception = e,
+                                Pipe = pipe.GetType(),
+                                Current = i,
+                            }
+                        );
 
-                            #region success result
+                        #endregion
 
-                            results.Add(
-                                new PipeResult
-                                {
-                                    Pipe = pipe.GetType(),
-                                    Started = start,
-                                    Ended = DateTime.UtcNow,
-                                }
-                            );
-
-                            input = output;
-
-                            #endregion
-
-                            #region notifying end
-
-                            progress(
-                                new PipeEnded
-                                {
-                                    Pipe = pipe.GetType(),
-                                    Current = i,
-                                }
-                            );
-
-                            #endregion
-                        }
-                        catch (Exception e)
-                        {
-                            #region error result
-
-                            results.Add(
-                                new PipeResult
-                                {
-                                    Pipe = pipe.GetType(),
-                                    Started = start,
-                                    Ended = DateTime.UtcNow,
-                                    Exception = e,
-                                }
-                            );
-
-                            #endregion
-
-                            #region notifying exception
-
-                            progress(
-                                new PipeException
-                                {
-                                    Exception = e,
-                                    Pipe = pipe.GetType(),
-                                    Current = i,
-                                }
-                            );
-
-                            #endregion
-                        }
+                        break;
                     }
 
                     ++i;

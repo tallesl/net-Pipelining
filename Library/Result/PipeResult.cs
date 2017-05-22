@@ -16,12 +16,12 @@
         /// <summary>
         /// When it started.
         /// </summary>
-        public DateTime? Started { get; set; }
+        public DateTime Started { get; set; }
 
         /// <summary>
         /// When it ended.
         /// </summary>
-        public DateTime? Ended { get; set; }
+        public DateTime Ended { get; set; }
 
         /// <summary>
         /// Exception caught while running it.

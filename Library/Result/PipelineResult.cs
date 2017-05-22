@@ -27,8 +27,7 @@
             Id = id;
             Output = output;
             Success = results.All(r => r.Exception == null);
-            ElapsedTime = results.Any() ? results.Last(r => r.Ended != null).Ended.Value -
-                    results.First().Started.Value : TimeSpan.Zero;
+            ElapsedTime = results.Any() ? results.Last().Ended - results.First().Started : TimeSpan.Zero;
             Pipes = results;
         }
 

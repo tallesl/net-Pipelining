@@ -19,6 +19,14 @@
                 .Pipe<RemoveStopWordsPipe>()
                 .Pipe<SortAlphabeticallyPipe>();
 
+            Pipeline.Register("extract_keywords_exception")
+                .Pipe("sanitize_input")
+                .Pipe<ExceptionPipe>()
+                .Pipe<SplitIntoWordsPipe>()
+                .Pipe<DeduplicateWordsPipe>()
+                .Pipe<RemoveStopWordsPipe>()
+                .Pipe<SortAlphabeticallyPipe>();
+
             Pipeline.Register("sanitize_input")
                 .Pipe<RemoveNonAlpha>()
                 .Pipe<RemoveCasePipe>();
@@ -140,6 +148,78 @@
             var result = Pipeline.Run("extract_keywords", "Some text.", progress).Result;
 
             Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
+        public void SuccessResult()
+        {
+            var now = DateTime.UtcNow;
+            Func<DateTime, bool> checkDate = d => (d - now) < TimeSpan.FromSeconds(5);
+
+            var result = Pipeline.Run("extract_keywords", "Some text.").Result;
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(result.Pipes.Count(), 6);
+
+            Assert.AreEqual(typeof(RemoveNonAlpha), result.Pipes[0].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[0].Started));
+            Assert.IsTrue(checkDate(result.Pipes[0].Ended));
+            Assert.IsNull(result.Pipes[0].Exception);
+
+            Assert.AreEqual(typeof(RemoveCasePipe), result.Pipes[1].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[1].Started));
+            Assert.IsTrue(checkDate(result.Pipes[1].Ended));
+            Assert.IsNull(result.Pipes[1].Exception);
+
+            Assert.AreEqual(typeof(SplitIntoWordsPipe), result.Pipes[2].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[2].Started));
+            Assert.IsTrue(checkDate(result.Pipes[2].Ended));
+            Assert.IsNull(result.Pipes[2].Exception);
+
+            Assert.AreEqual(typeof(DeduplicateWordsPipe), result.Pipes[3].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[3].Started));
+            Assert.IsTrue(checkDate(result.Pipes[3].Ended));
+            Assert.IsNull(result.Pipes[3].Exception);
+
+            Assert.AreEqual(typeof(RemoveStopWordsPipe), result.Pipes[4].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[4].Started));
+            Assert.IsTrue(checkDate(result.Pipes[4].Ended));
+            Assert.IsNull(result.Pipes[4].Exception);
+
+            Assert.AreEqual(typeof(SortAlphabeticallyPipe), result.Pipes[5].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[5].Started));
+            Assert.IsTrue(checkDate(result.Pipes[5].Ended));
+            Assert.IsNull(result.Pipes[5].Exception);
+        }
+
+        [TestMethod]
+        public void FailureResult()
+        {
+            var now = DateTime.UtcNow;
+            Func<DateTime, bool> checkDate = d => (d - now) < TimeSpan.FromSeconds(5);
+
+            var result = Pipeline.Run("extract_keywords_exception", "Some text.").Result;
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(3, result.Pipes.Count());
+
+            Assert.AreEqual(typeof(RemoveNonAlpha), result.Pipes[0].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[0].Started));
+            Assert.IsTrue(checkDate(result.Pipes[0].Ended));
+            Assert.IsNull(result.Pipes[0].Exception);
+
+            Assert.AreEqual(typeof(RemoveCasePipe), result.Pipes[1].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[1].Started));
+            Assert.IsTrue(checkDate(result.Pipes[1].Ended));
+            Assert.IsNull(result.Pipes[1].Exception);
+
+            Assert.AreEqual(typeof(ExceptionPipe), result.Pipes[2].Pipe);
+            Assert.IsTrue(checkDate(result.Pipes[2].Started));
+            Assert.IsTrue(checkDate(result.Pipes[2].Ended));
+            Assert.IsNotNull(result.Pipes[2].Exception);
+
+            Assert.AreEqual("Exception thrown on purpose.", result.Pipes[2].Exception.Message);
+            Assert.AreEqual(typeof(InvalidOperationException), result.Pipes[2].Exception.GetType());
         }
     }
 }

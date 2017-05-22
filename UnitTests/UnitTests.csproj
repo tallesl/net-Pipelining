@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Pipes\ExceptionPipe.cs" />
     <Compile Include="Pipes\SortAlphabeticallyPipe.cs" />
     <Compile Include="Pipes\SplitIntoWordsPipe.cs" />
     <Compile Include="Pipes\DeduplicateWordsPipe.cs" />
