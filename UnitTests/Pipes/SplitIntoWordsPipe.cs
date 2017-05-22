@@ -9,6 +9,7 @@
         {
             string text = input;
 
+            progress("Splitting text into collection of words...");
             return text.Split(' ');
         }
     }

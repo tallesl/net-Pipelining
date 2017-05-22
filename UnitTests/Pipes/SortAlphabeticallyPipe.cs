@@ -10,10 +10,11 @@
         public object Run(dynamic input, Action<string> progress)
         {
             IEnumerable<string> text = input;
+
+            progress("Sorting words alphabetically...");
+
             var sorted = text.ToList();
-
             sorted.Sort();
-
             return sorted;
         }
     }

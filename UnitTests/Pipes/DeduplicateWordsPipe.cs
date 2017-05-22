@@ -11,6 +11,7 @@
         {
             IEnumerable<string> words = input;
 
+            progress("Removing duplicate words...");
             return words.Distinct();
         }
     }

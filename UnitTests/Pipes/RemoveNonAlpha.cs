@@ -134,6 +134,8 @@
                 }
             };
 
+            progress("Removing non-alphabetic characters...");
+
             var final = new List<char>();
 
             foreach (var c in text)

@@ -30,6 +30,7 @@
         {
             IEnumerable<string> words = input;
 
+            progress("Removing english stop words...");
             return words.Where(w => !_stopWords.Contains(w.ToLowerInvariant()));
         }
     }

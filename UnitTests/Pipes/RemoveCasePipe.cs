@@ -9,6 +9,7 @@
         {
             string text = input;
 
+            progress("Replacing upper case characters to lower case...");
             return text.ToLowerInvariant();
         }
     }
