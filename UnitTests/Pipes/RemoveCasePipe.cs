@@ -1,4 +1,4 @@
-﻿namespace Pipelining.UnitTests
+﻿namespace Pipelining.UnitTests.Pipes
 {
     using PipeliningLibrary;
     using System;

@@ -1,9 +1,9 @@
 ﻿namespace Pipelining.UnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Pipelining.UnitTests.Pipes;
     using PipeliningLibrary;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
