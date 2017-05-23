@@ -69,22 +69,22 @@
 
                 foreach (var pipe in pipes)
                 {
-                    #region notifying start
-
-                    progress(
-                        new PipeStarted
-                        {
-                            Pipe = pipe.GetType(),
-                            Current = i,
-                        }
-                    );
-
-                    #endregion
-
                     var start = DateTime.UtcNow;
 
                     try
                     {
+                        #region notifying start
+
+                        progress(
+                            new PipeStarted
+                            {
+                                Pipe = pipe.GetType(),
+                                Current = i,
+                            }
+                        );
+
+                        #endregion
+
                         #region running the pipe
 
                         output = pipe.Run(
@@ -98,21 +98,6 @@
                                 }
                             )
                         );
-
-                        #endregion
-
-                        #region success result
-
-                        results.Add(
-                            new PipeResult
-                            {
-                                Pipe = pipe.GetType(),
-                                Started = start,
-                                Ended = DateTime.UtcNow,
-                            }
-                        );
-
-                        input = output;
 
                         #endregion
 
@@ -160,6 +145,30 @@
                         break;
                     }
 
+                    #region success result
+
+                    results.Add(
+                        new PipeResult
+                        {
+                            Pipe = pipe.GetType(),
+                            Started = start,
+                            Ended = DateTime.UtcNow,
+                        }
+                    );
+
+                    #endregion
+
+                    #region checking for premature end
+
+                    if (output is PipelineEnd)
+                    {
+                        output = ((PipelineEnd)output).Output;
+                        break;
+                    }
+
+                    #endregion
+
+                    input = output;
                     ++i;
                 }
 

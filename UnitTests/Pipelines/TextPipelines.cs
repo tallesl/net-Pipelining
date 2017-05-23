@@ -1,10 +1,10 @@
-﻿namespace PipeliningLibrary.UnitTests
+﻿namespace PipeliningLibrary.UnitTests.Pipelines
 {
     using Pipes;
 
-    public class TestsPipelines : PipelineGroup
+    public class TextPipelines : PipelineGroup
     {
-        public TestsPipelines()
+        public TextPipelines()
         {
             Pipeline("empty");
 

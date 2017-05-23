@@ -61,7 +61,17 @@
 
         private void RunPipe(IPipe pipe)
         {
-            Current = pipe.Run(Current, _progress);
+            var output = pipe.Run(Current, _progress);
+
+            if (output is PipelineEnd)
+            {
+                output = ((PipelineEnd)output).Output;
+
+                _toRun = Enumerable.Empty<IPipe>().GetEnumerator();
+                _toResolve.Clear();
+            }
+
+            Current = output;
         }
 
         public void Dispose() { }

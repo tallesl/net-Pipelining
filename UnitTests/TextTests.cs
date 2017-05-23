@@ -1,20 +1,21 @@
 ﻿namespace PipeliningLibrary.UnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Pipelines;
     using Pipes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     [TestClass]
-    public class UnitTests
+    public class TextTests
     {
         private PipelineGroup _pipelines;
 
         [TestInitialize]
         public void Initialize()
         {
-            _pipelines = new TestsPipelines();
+            _pipelines = new TextPipelines();
         }
 
         [TestMethod]
@@ -101,6 +102,8 @@
 
             Assert.AreEqual(expected.Length, actual.Length);
 
+            Assert.AreEqual(expected[0], actual[0]);
+            Assert.AreEqual(expected[1], actual[1]);
             assertCollection(expected[2], actual[2]);
             assertCollection(expected[3], actual[3]);
             assertCollection(expected[4], actual[4]);
