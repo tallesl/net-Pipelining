@@ -61,6 +61,7 @@
     <Compile Include="Pipes\RemoveCasePipe.cs" />
     <Compile Include="Pipes\RemoveNonAlpha.cs" />
     <Compile Include="Pipes\RemoveStopWordsPipe.cs" />
+    <Compile Include="TestsPipelines.cs" />
     <Compile Include="UnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,26 +10,12 @@
     [TestClass]
     public class UnitTests
     {
-        static UnitTests()
+        private PipelineGroup _pipelines;
+
+        [TestInitialize]
+        public void Initialize()
         {
-            Pipeline.Register("extract_keywords")
-                .Pipe("sanitize_input")
-                .Pipe<SplitIntoWordsPipe>()
-                .Pipe<DeduplicateWordsPipe>()
-                .Pipe<RemoveStopWordsPipe>()
-                .Pipe<SortAlphabeticallyPipe>();
-
-            Pipeline.Register("extract_keywords_exception")
-                .Pipe("sanitize_input")
-                .Pipe<ExceptionPipe>()
-                .Pipe<SplitIntoWordsPipe>()
-                .Pipe<DeduplicateWordsPipe>()
-                .Pipe<RemoveStopWordsPipe>()
-                .Pipe<SortAlphabeticallyPipe>();
-
-            Pipeline.Register("sanitize_input")
-                .Pipe<RemoveNonAlpha>()
-                .Pipe<RemoveCasePipe>();
+            _pipelines = new TestsPipelines();
         }
 
         [TestMethod]
@@ -41,7 +27,7 @@
             var expected = "the tamagotchi is a handheld digital pet created in japan by akihiro yokoi of wiz and " +
                 "aki maita of bandai";
 
-            var result = Pipeline.Run("sanitize_input", input).Result;
+            var result = _pipelines.Run("sanitize_input", input).Result;
             var actual = (string)result.Output;
 
             Assert.IsTrue(result.Success);
@@ -57,7 +43,7 @@
             var expected = new[] { "aki", "akihiro", "bandai", "created", "digital", "handheld", "japan", "maita",
                 "pet", "tamagotchi", "wiz", "yokoi" };
 
-            var result = Pipeline.Run("extract_keywords", input).Result;
+            var result = _pipelines.Run("extract_keywords", input).Result;
             var actual = ((IEnumerable<string>)result.Output).ToArray();
 
             Assert.IsTrue(result.Success);
@@ -97,7 +83,7 @@
                         "tamagotchi", "wiz", "yokoi", }
             };
 
-            var actual = Pipeline.GetEnumerable("extract_keywords", input).ToArray();
+            var actual = _pipelines.GetEnumerable("extract_keywords", input).ToArray();
 
             Action<object, object> assertCollection = (e, a) =>
                 CollectionAssert.AreEqual(((IEnumerable<string>)e).ToArray(), ((IEnumerable<string>)a).ToArray());
@@ -145,7 +131,7 @@
                 }
             };
 
-            var result = Pipeline.Run("extract_keywords", "Some text.", progress).Result;
+            var result = _pipelines.Run("extract_keywords", "Some text.", progress).Result;
 
             Assert.IsTrue(result.Success);
         }
@@ -156,7 +142,7 @@
             var now = DateTime.UtcNow;
             Func<DateTime, bool> checkDate = d => (d - now) < TimeSpan.FromSeconds(5);
 
-            var result = Pipeline.Run("extract_keywords", "Some text.").Result;
+            var result = _pipelines.Run("extract_keywords", "Some text.").Result;
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Pipes.Count(), 6);
@@ -198,7 +184,7 @@
             var now = DateTime.UtcNow;
             Func<DateTime, bool> checkDate = d => (d - now) < TimeSpan.FromSeconds(5);
 
-            var result = Pipeline.Run("extract_keywords_exception", "Some text.").Result;
+            var result = _pipelines.Run("extract_keywords_exception", "Some text.").Result;
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(3, result.Pipes.Count());

@@ -13,11 +13,14 @@
     {
         private readonly string _id;
 
+        private readonly PipelineGroup _pipelines;
+
         internal readonly IList<PipeSpecifier> Pipes;
 
-        internal Pipeline(string id)
+        internal Pipeline(PipelineGroup pipelines, string id)
         {
             _id = id;
+            _pipelines = pipelines;
             Pipes = new List<PipeSpecifier>();
         }
 
@@ -28,7 +31,7 @@
         /// <returns>This pipeline instance</returns>
         public Pipeline Pipe(string id)
         {
-            Pipes.Add(new PipeSpecifier(id));
+            Pipes.Add(new PipeSpecifier(_pipelines, id));
             return this;
         }
 

@@ -9,11 +9,6 @@
     {
         private object _specifier;
 
-        internal PipeSpecifier(string id)
-        {
-            _specifier = id;
-        }
-
         internal PipeSpecifier(Type type)
         {
             _specifier = type;
@@ -24,15 +19,16 @@
             _specifier = pipe;
         }
 
+        internal PipeSpecifier(PipelineGroup pipelines, string id)
+        {
+            _specifier = new Tuple<PipelineGroup, string>(pipelines, id);
+        }
+
         internal IEnumerable<IPipe> Resolve()
         {
             var type = _specifier.GetType();
 
-            if (_specifier is string)
-            {
-                return Pipeline.Get((string)_specifier).Pipes.SelectMany(p => p.Resolve());
-            }
-            else if (_specifier is Type)
+            if (_specifier is Type)
             {
                 type = (Type)_specifier;
 
@@ -42,6 +38,11 @@
             else if (_specifier is IPipe)
             {
                 return new[] { (IPipe)_specifier };
+            }
+            else if (_specifier is Tuple<PipelineGroup, string>)
+            {
+                var tuple = (Tuple<PipelineGroup, string>)_specifier;
+                return tuple.Item1.Get(tuple.Item2).Pipes.SelectMany(p => p.Resolve());
             }
 
             Debug.Assert(true, "Unexpected type: " + _specifier.GetType());

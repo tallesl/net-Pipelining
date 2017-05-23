@@ -10,8 +10,9 @@
         static void Main(string[] args)
         {
             // initializing the pipeline
-            Pipeline.Expando();
-            Pipeline.Register("open_issues")
+            var pipelines = new PipelineGroup();
+            pipelines.Expando();
+            pipelines.Register("open_issues")
                 .Pipe<GetUserRepositories>()
                 .Pipe<FilterOpenIssues>()
                 .Pipe<GetIssuesDetails>()
@@ -22,7 +23,7 @@
             var user = Console.ReadLine();
 
             // running the pipeline
-            var task = Pipeline.Run(
+            var task = pipelines.Run(
 
                 // id of the pipeline to run
                 "open_issues",

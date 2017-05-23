@@ -6,19 +6,19 @@
     using System.Threading.Tasks;
     using XpandoLibrary;
 
-    public sealed partial class Pipeline
+    public class PipelineGroup
     {
-        private static bool _expando = false;
+        private bool _expando = false;
 
-        private static TaskScheduler _scheduler = TaskScheduler.Default;
+        private TaskScheduler _scheduler = TaskScheduler.Default;
 
-        private static readonly ConcurrentDictionary<string, Pipeline> _pipelines =
+        private readonly ConcurrentDictionary<string, Pipeline> _pipelines =
             new ConcurrentDictionary<string, Pipeline>();
 
         /// <summary>
         /// Forces the input object to be an ExpandoObject.
         /// </summary>
-        public static void Expando()
+        public void Expando()
         {
             _expando = true;
         }
@@ -27,7 +27,7 @@
         /// Sets a TaskScheduler to be used.
         /// </summary>
         /// <param name="scheduler">TaskScheduler to use</param>
-        public static void Scheduler(TaskScheduler scheduler)
+        public void Scheduler(TaskScheduler scheduler)
         {
             _scheduler = scheduler;
         }
@@ -40,7 +40,7 @@
         /// <param name="input">Input for the pipeline</param>
         /// <param name="progress">Optional action to be called with pipe progress messages</param>
         /// <returns>An IEnumerable which each iteration runs the next pipe in the pipeline.</returns>
-        public static IEnumerable<object> GetEnumerable(string id, object input = null,
+        public IEnumerable<object> GetEnumerable(string id, object input = null,
             Action<string> progress = null)
         {
             return new PipeEnumerator(input, progress, Get(id).Pipes);
@@ -51,9 +51,9 @@
         /// </summary>
         /// <param name="id">Pipeline identifier</param>
         /// <returns>The registered pipeline instance</returns>
-        public static Pipeline Register(string id)
+        public Pipeline Register(string id)
         {
-            var pipeline = new Pipeline(id);
+            var pipeline = new Pipeline(this, id);
 
             if (!_pipelines.TryAdd(id, pipeline))
                 throw new PipelineAlreadyRegisteredException(id);
@@ -69,7 +69,7 @@
         /// <param name="progress">Optional action to be called with pipeline events</param>
         /// <param name="scheduler">TaskScheduler to use for this run</param>
         /// <returns>A Task of the running pipeline with gives a PipelineResult</returns>
-        public static Task<PipelineResult> Run(string id, object input = null,
+        public Task<PipelineResult> Run(string id, object input = null,
             Action<PipelineEvent> progress = null, TaskScheduler scheduler = null)
         {
             var pipeline = Get(id);
@@ -84,7 +84,7 @@
             return pipeline.Run(input, progress, scheduler);
         }
 
-        internal static Pipeline Get(string id)
+        internal Pipeline Get(string id)
         {
             Pipeline pipeline;
 

@@ -50,9 +50,9 @@
     <Compile Include="Event\PipeEnded.cs" />
     <Compile Include="Event\PipeStarted.cs" />
     <Compile Include="Exception\PipelineAlreadyRegisteredException.cs" />
-    <Compile Include="Pipeline %28instance%29.cs" />
+    <Compile Include="Pipeline.cs" />
     <Compile Include="Exception\PipelineNotFoundException.cs" />
-    <Compile Include="Pipeline %28static%29.cs" />
+    <Compile Include="PipelineGroup.cs" />
     <Compile Include="PipeEnumerator.cs" />
     <Compile Include="PipeSpecifier.cs" />
     <Compile Include="Result\PipelineResult.cs" />
