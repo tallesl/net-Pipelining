@@ -1,6 +1,5 @@
-﻿namespace Pipelining.UnitTests.Pipes
+﻿namespace PipeliningLibrary.UnitTests.Pipes
 {
-    using PipeliningLibrary;
     using System;
     using System.Collections.Generic;
     using System.Linq;

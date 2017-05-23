@@ -1,7 +1,6 @@
-﻿namespace Pipelining.UnitTests
+﻿namespace PipeliningLibrary.UnitTests
 {
-    using Pipelining.UnitTests.Pipes;
-    using PipeliningLibrary;
+    using Pipes;
 
     public class TestsPipelines : PipelineGroup
     {
