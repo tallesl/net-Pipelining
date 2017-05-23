@@ -156,8 +156,10 @@
 
             var result = _pipelines.Run("extract_keywords", "Some text.").Result;
 
+            Assert.AreEqual("extract_keywords", result.Id);
+            Assert.IsNotNull(result.Output);
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Pipes.Count(), 6);
+            Assert.AreEqual(6, result.Pipes.Count());
 
             Assert.AreEqual(typeof(RemoveNonAlphaPipe), result.Pipes[0].Pipe);
             Assert.IsTrue(checkDate(result.Pipes[0].Started));
@@ -198,6 +200,8 @@
 
             var result = _pipelines.Run("extract_keywords_exception", "Some text.").Result;
 
+            Assert.AreEqual("extract_keywords_exception", result.Id);
+            Assert.IsNotNull(result.Output);
             Assert.IsFalse(result.Success);
             Assert.AreEqual(3, result.Pipes.Count());
 
