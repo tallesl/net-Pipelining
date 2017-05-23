@@ -19,6 +19,18 @@
         }
 
         [TestMethod]
+        public void Empty()
+        {
+            var result = _pipelines.Run("empty").Result;
+
+            Assert.AreEqual("empty", result.Id);
+            Assert.IsNull(result.Output);
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(TimeSpan.Zero, result.ElapsedTime);
+            Assert.IsFalse(result.Pipes.Any());
+        }
+
+        [TestMethod]
         public void SimplePipeline()
         {
             var input = @"The Tamagotchi (たまごっち) is a handheld digital pet, created in Japan by Akihiro Yokoi of

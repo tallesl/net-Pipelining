@@ -7,6 +7,8 @@
     {
         public TestsPipelines()
         {
+            Pipeline("empty");
+
             Pipeline("sanitize_input")
                 .Pipe<RemoveNonAlphaPipe>()
                 .Pipe<RemoveCasePipe>();
