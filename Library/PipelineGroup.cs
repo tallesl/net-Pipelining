@@ -51,7 +51,7 @@
         /// </summary>
         /// <param name="id">Pipeline identifier</param>
         /// <returns>The registered pipeline instance</returns>
-        public Pipeline Register(string id)
+        public Pipeline Pipeline(string id)
         {
             var pipeline = new Pipeline(this, id);
 

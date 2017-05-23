@@ -12,7 +12,7 @@
             // initializing the pipeline
             var pipelines = new PipelineGroup();
             pipelines.Expando();
-            pipelines.Register("open_issues")
+            pipelines.Pipeline("open_issues")
                 .Pipe<GetUserRepositories>()
                 .Pipe<FilterOpenIssues>()
                 .Pipe<GetIssuesDetails>()
