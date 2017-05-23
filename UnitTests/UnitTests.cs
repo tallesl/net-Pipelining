@@ -147,7 +147,7 @@
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Pipes.Count(), 6);
 
-            Assert.AreEqual(typeof(RemoveNonAlpha), result.Pipes[0].Pipe);
+            Assert.AreEqual(typeof(RemoveNonAlphaPipe), result.Pipes[0].Pipe);
             Assert.IsTrue(checkDate(result.Pipes[0].Started));
             Assert.IsTrue(checkDate(result.Pipes[0].Ended));
             Assert.IsNull(result.Pipes[0].Exception);
@@ -189,7 +189,7 @@
             Assert.IsFalse(result.Success);
             Assert.AreEqual(3, result.Pipes.Count());
 
-            Assert.AreEqual(typeof(RemoveNonAlpha), result.Pipes[0].Pipe);
+            Assert.AreEqual(typeof(RemoveNonAlphaPipe), result.Pipes[0].Pipe);
             Assert.IsTrue(checkDate(result.Pipes[0].Started));
             Assert.IsTrue(checkDate(result.Pipes[0].Ended));
             Assert.IsNull(result.Pipes[0].Exception);

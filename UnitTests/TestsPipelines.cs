@@ -8,7 +8,7 @@
         public TestsPipelines()
         {
             Register("sanitize_input")
-                .Pipe<RemoveNonAlpha>()
+                .Pipe<RemoveNonAlphaPipe>()
                 .Pipe<RemoveCasePipe>();
 
             Register("extract_keywords")

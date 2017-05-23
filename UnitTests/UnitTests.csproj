@@ -59,7 +59,7 @@
     <Compile Include="Pipes\SplitIntoWordsPipe.cs" />
     <Compile Include="Pipes\DeduplicateWordsPipe.cs" />
     <Compile Include="Pipes\RemoveCasePipe.cs" />
-    <Compile Include="Pipes\RemoveNonAlpha.cs" />
+    <Compile Include="Pipes\RemoveNonAlphaPipe.cs" />
     <Compile Include="Pipes\RemoveStopWordsPipe.cs" />
     <Compile Include="TestsPipelines.cs" />
     <Compile Include="UnitTests.cs" />

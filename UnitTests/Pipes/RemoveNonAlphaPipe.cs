@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
 
-    public class RemoveNonAlpha : IPipe
+    public class RemoveNonAlphaPipe : IPipe
     {
         public object Run(dynamic input, Action<string> progress)
         {
