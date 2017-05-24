@@ -4,6 +4,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using XpandoLibrary;
 
     class Program
     {
@@ -11,7 +12,6 @@
         {
             // initializing the pipeline
             var pipelines = new PipelineGroup();
-            pipelines.Expando();
             pipelines.Pipeline("open_issues")
                 .Pipe<GetUserRepositories>()
                 .Pipe<FilterOpenIssues>()
@@ -33,7 +33,7 @@
                 {
                     User = user,
                     PerPage = 10,
-                },
+                }.ToExpando(),
 
                 // an action to handle events
                 e =>

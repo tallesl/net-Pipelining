@@ -4,33 +4,11 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using XpandoLibrary;
 
     public class PipelineGroup
     {
-        private bool _expando = false;
-
-        private TaskScheduler _scheduler = TaskScheduler.Default;
-
         private readonly ConcurrentDictionary<string, Pipeline> _pipelines =
             new ConcurrentDictionary<string, Pipeline>();
-
-        /// <summary>
-        /// Forces the input object to be an ExpandoObject.
-        /// </summary>
-        public void Expando()
-        {
-            _expando = true;
-        }
-
-        /// <summary>
-        /// Sets a TaskScheduler to be used.
-        /// </summary>
-        /// <param name="scheduler">TaskScheduler to use</param>
-        public void Scheduler(TaskScheduler scheduler)
-        {
-            _scheduler = scheduler;
-        }
 
         /// <summary>
         /// Returns an IEnumerable which each iteration runs the next pipe in the pipeline.
@@ -70,16 +48,7 @@
         public Task<PipelineResult> Run(string id, object input = null,
             Action<PipelineEvent> progress = null, TaskScheduler scheduler = null)
         {
-            var pipeline = Get(id);
-
-            if (_expando)
-                input = (input ?? new object()).ToExpando();
-
-            progress = progress ?? (p => { });
-
-            scheduler = scheduler ?? _scheduler;
-
-            return pipeline.Run(input, progress, scheduler);
+            return Get(id).Run(input, progress ?? (p => { }), scheduler ?? TaskScheduler.Default);
         }
 
         internal Pipeline Get(string id)

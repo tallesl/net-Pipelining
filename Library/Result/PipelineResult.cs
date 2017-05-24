@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Linq;
-    using XpandoLibrary;
 
     /// <summary>
     /// Result from a pipeline run.
