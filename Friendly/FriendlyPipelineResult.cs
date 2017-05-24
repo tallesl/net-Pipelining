@@ -12,13 +12,22 @@
     [Serializable]
     public class FriendlyPipelineResult
     {
-        private const string _notSerializableMessage = "The object is not seriazable (System.Type.IsSerializable).";
+        private const string _message = "The object is not seriazable (System.Type.IsSerializable).";
 
         /// <summary>
         /// Constructs a serialize-friendly PipelineResult.
+        /// A string with a proper message is used to replace non-serializable values.
         /// </summary>
         /// <param name="pipelineResult">PipelineResult to make serialize-friendly.</param>
-        public FriendlyPipelineResult(PipelineResult pipelineResult)
+        public FriendlyPipelineResult(PipelineResult pipelineResult) : this(pipelineResult, _message) { }
+
+        /// <summary>
+        /// Constructs a serialize-friendly PipelineResult.
+        /// A string with a proper message is used to replace non-serializable values.
+        /// </summary>
+        /// <param name="pipelineResult">PipelineResult to make serialize-friendly.</param>
+        /// <param name="replacement">Replacement to use when a non-serializable value is found</param>
+        public FriendlyPipelineResult(PipelineResult pipelineResult, object replacement)
         {
             Id = pipelineResult.Id;
             Success = pipelineResult.Success;
@@ -35,7 +44,7 @@
             else if (pipelineResult.Output is ExpandoObject)
 
                 // we navigate the whole property tree replacing with the "not serializable" message when needed
-                Output = CopyWithSerializableOnly((ExpandoObject)Output);
+                Output = CopyWithSerializableOnly((ExpandoObject)Output, replacement);
 
             // if it's serializable
             else if (pipelineResult.Output.GetType().IsSerializable)
@@ -46,8 +55,8 @@
             // if it's not null, not an ExpandoObject and not serializable
             else
 
-                // we use the "not serializable" message instead
-                Output = _notSerializableMessage;;
+                // we use the replacement instead
+                Output = replacement;
         }
 
         /// <summary>
@@ -75,7 +84,7 @@
         /// </summary>
         public FriendlyPipeResult[] Pipes { get; set; }
 
-        private static ExpandoObject CopyWithSerializableOnly(ExpandoObject expando)
+        private static ExpandoObject CopyWithSerializableOnly(ExpandoObject expando, object replacement)
         {
             Action<ExpandoObject> replace = null;
             replace = e =>
@@ -94,8 +103,8 @@
                         // if it's not serializable
                         if (!kvp.Value.GetType().IsSerializable)
 
-                            // we use the "not serializable" message
-                            dict[kvp.Key] = _notSerializableMessage;
+                            // we use the replacement
+                            dict[kvp.Key] = replacement;
                     }
                     else
                     {
