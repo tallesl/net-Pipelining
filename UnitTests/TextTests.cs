@@ -111,46 +111,6 @@
         }
 
         [TestMethod]
-        public void ProgressMessages()
-        {
-            var expected = new Queue<string>(
-                new []
-                {
-                    // RemoveNonAlpha message
-                    "Removing non-alphabetic characters...",
-
-                    // RemoveCasePipe message
-                    "Replacing upper case characters to lower case...",
-
-                    // SplitIntoWordsPipe message
-                    "Splitting text into collection of words...",
-
-                    // DeduplicateWordsPipe message
-                    "Removing duplicate words...",
-
-                    // RemoveStopWordsPipe message
-                    "Removing english stop words...",
-
-                    // SortAlphabeticallyPipe message
-                    "Sorting words alphabetically...",
-                }
-            );
-
-            Action<PipelineEvent> progress = e =>
-            {
-                if (e is PipeMessage)
-                {
-                    var message = (PipeMessage)e;
-                    Assert.AreEqual(expected.Dequeue(), message.Message);
-                }
-            };
-
-            var result = _pipelines.Run("extract_keywords", "Some text.", progress).Result;
-
-            Assert.IsTrue(result.Success);
-        }
-
-        [TestMethod]
         public void SuccessResult()
         {
             var now = DateTime.UtcNow;

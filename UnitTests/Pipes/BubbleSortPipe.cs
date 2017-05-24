@@ -8,7 +8,7 @@
 
     public class BubbleSortPipe : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             IEnumerable collection = input;
 

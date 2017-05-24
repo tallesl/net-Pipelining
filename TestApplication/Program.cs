@@ -46,9 +46,6 @@
 
                     if (e is PipeException)
                         Console.WriteLine("An exception just happened: {0}", ((PipeException)e).Exception);
-
-                    if (e is PipeMessage)
-                        Console.WriteLine(((PipeMessage)e).Message);
                 }
             );
 

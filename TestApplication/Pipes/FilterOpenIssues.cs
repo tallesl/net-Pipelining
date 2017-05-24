@@ -8,13 +8,13 @@
 
     public class FilterOpenIssues : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             // repositories data
             IEnumerable<dynamic> repositories = input.Repositories;
 
             // notifying that the filtering is taking place
-            progress("Filtering repositories...");
+            Console.WriteLine("Filtering repositories...");
 
             // total of repositories received
             var total = repositories.Count();
@@ -23,7 +23,7 @@
             var filtered = repositories.Where(r => r.open_issues > 0).ToList();
 
             // notifying what we filtered
-            progress(string.Format("Picked {0} from {1} repositories.", filtered.Count, total));
+            Console.WriteLine(string.Format("Picked {0} from {1} repositories.", filtered.Count, total));
 
             // setting the "Repositories" property
             input.Repositories = filtered;

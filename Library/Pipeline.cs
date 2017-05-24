@@ -85,21 +85,7 @@
 
                         #endregion
 
-                        #region running the pipe
-
-                        output = pipe.Run(
-                            input,
-                            (message) => progress(
-                                new PipeMessage
-                                {
-                                    Pipe = pipe.GetType(),
-                                    Message = message,
-                                    Current = i,
-                                }
-                            )
-                        );
-
-                        #endregion
+                        output = pipe.Run(input);
 
                         #region notifying end
 

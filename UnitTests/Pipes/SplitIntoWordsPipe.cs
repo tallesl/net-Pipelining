@@ -4,11 +4,9 @@
 
     public class SplitIntoWordsPipe : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             string text = input;
-
-            progress("Splitting text into collection of words...");
             return text.Split(' ');
         }
     }

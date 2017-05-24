@@ -6,7 +6,7 @@
 
     public class RemoveNonAlphaPipe : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             string text = input;
 
@@ -131,8 +131,6 @@
                         return c;
                 }
             };
-
-            progress("Removing non-alphabetic characters...");
 
             var final = new List<char>();
 

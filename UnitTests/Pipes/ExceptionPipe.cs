@@ -4,7 +4,7 @@
 
     public class ExceptionPipe : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             throw new InvalidOperationException("Exception thrown on purpose.");
         }

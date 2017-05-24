@@ -7,7 +7,7 @@
 
     public class GetUserRepositories : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             // GitHub user
             string user = input.User;
@@ -25,7 +25,7 @@
             for (;;)
             {
                 // notifying the current navigation
-                progress(string.Format("Navigating to page {0}...", i));
+                Console.WriteLine("Navigating to page {0}...", i);
 
                 // getting the current page data
                 var current = Http.Get(
@@ -42,7 +42,7 @@
             }
 
             // notifying about how many repositories we found
-            progress(string.Format("Found {0} repositories.", repositories.Count));
+            Console.WriteLine("Found {0} repositories.", repositories.Count);
 
             // setting the "Repositories" property
             input.Repositories = repositories;

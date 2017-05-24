@@ -13,11 +13,10 @@
 
         private Queue<PipeSpecifier> _toResolve;
 
-        internal PipeEnumerator(object input, Action<string> progress, IEnumerable<PipeSpecifier> specifiers)
+        internal PipeEnumerator(object input, IEnumerable<PipeSpecifier> specifiers)
         {
             Current = input;
 
-            _progress = progress ?? (s => { });
             _toResolve = new Queue<PipeSpecifier>(specifiers);
 
             Resolve();
@@ -61,7 +60,7 @@
 
         private void RunPipe(IPipe pipe)
         {
-            var output = pipe.Run(Current, _progress);
+            var output = pipe.Run(Current);
 
             if (output is PipelineEnd)
             {

@@ -38,12 +38,10 @@
         /// </summary>
         /// <param name="id">Pipeline identifier</param>
         /// <param name="input">Input for the pipeline</param>
-        /// <param name="progress">Optional action to be called with pipe progress messages</param>
         /// <returns>An IEnumerable which each iteration runs the next pipe in the pipeline.</returns>
-        public IEnumerable<object> GetEnumerable(string id, object input = null,
-            Action<string> progress = null)
+        public IEnumerable<object> GetEnumerable(string id, object input = null)
         {
-            return new PipeEnumerator(input, progress, Get(id).Pipes);
+            return new PipeEnumerator(input, Get(id).Pipes);
         }
 
         /// <summary>

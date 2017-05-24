@@ -25,11 +25,9 @@
             "yourselves",
         };
 
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             IEnumerable<string> words = input;
-
-            progress("Removing english stop words...");
             return words.Where(w => !_stopWords.Contains(w.ToLowerInvariant()));
         }
     }

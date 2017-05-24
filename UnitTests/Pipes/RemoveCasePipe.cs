@@ -4,11 +4,9 @@
 
     public class RemoveCasePipe : IPipe
     {
-        public object Run(dynamic input, Action<string> progress)
+        public object Run(dynamic input)
         {
             string text = input;
-
-            progress("Replacing upper case characters to lower case...");
             return text.ToLowerInvariant();
         }
     }

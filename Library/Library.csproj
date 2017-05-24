@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Event\PipelineEvent.cs" />
     <Compile Include="Event\PipeException.cs" />
-    <Compile Include="Event\PipeMessage.cs" />
     <Compile Include="Event\PipeEnded.cs" />
     <Compile Include="Event\PipeStarted.cs" />
     <Compile Include="Exception\PipelineAlreadyRegisteredException.cs" />

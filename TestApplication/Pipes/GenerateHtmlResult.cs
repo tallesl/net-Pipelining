@@ -11,7 +11,7 @@
 
     public class GenerateHtmlResult : IPipe
     {
-        public object Run(dynamic input, Action<string> notifyProgress)
+        public object Run(dynamic input)
         {
             // GitHub user
             string user = input.User;
