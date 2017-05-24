@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{67F1AB4E-014A-46B0-91EF-A9476F6A6F36}</ProjectGuid>
+    <ProjectGuid>{E8FB574F-1207-42D9-AA25-0DFBB2864792}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PipeliningLibrary</RootNamespace>
-    <AssemblyName>Pipelining</AssemblyName>
+    <RootNamespace>PipeliningLibrary.Friendly</RootNamespace>
+    <AssemblyName>Pipelining.Friendly</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +28,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Pipelining.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dictionary, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -44,26 +41,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event\PipelineEvent.cs" />
-    <Compile Include="Event\PipeException.cs" />
-    <Compile Include="Event\PipeEnded.cs" />
-    <Compile Include="Event\PipeStarted.cs" />
-    <Compile Include="Exception\PipelineAlreadyRegisteredException.cs" />
-    <Compile Include="Pipeline.cs" />
-    <Compile Include="Exception\PipelineNotFoundException.cs" />
-    <Compile Include="PipelineGroup.cs" />
-    <Compile Include="PipelineEnd.cs" />
-    <Compile Include="PipeEnumerator.cs" />
-    <Compile Include="PipeSpecifier.cs" />
-    <Compile Include="Result\PipelineResult.cs" />
-    <Compile Include="Interface\IPipe.cs" />
-    <Compile Include="Result\PipeResult.cs" />
+    <Compile Include="FriendlyPipelineResult.cs" />
+    <Compile Include="FriendlyPipeResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{67f1ab4e-014a-46b0-91ef-a9476f6a6f36}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
