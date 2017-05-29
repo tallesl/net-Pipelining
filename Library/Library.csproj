@@ -36,21 +36,39 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event\PipelineEvent.cs" />
-    <Compile Include="Event\PipeException.cs" />
-    <Compile Include="Event\PipeEnded.cs" />
-    <Compile Include="Event\PipeStarted.cs" />
-    <Compile Include="Exception\PipelineAlreadyRegisteredException.cs" />
+    <Compile Include="Building\Branching\BranchPipeWrapper.cs" />
+    <Compile Include="Building\Branching\BranchBuilder.cs" />
+    <Compile Include="Building\Specifiers\BranchPipe\BranchPipeTypeSpecifier.cs" />
+    <Compile Include="Building\Specifiers\IBranchPipeSpecifier.cs" />
+    <Compile Include="Building\Specifiers\Pipeline\PipelineReferenceSpecifier.cs" />
+    <Compile Include="Building\Specifiers\BranchPipe\BranchPipeInstanceSpecifier.cs" />
+    <Compile Include="Building\Specifiers\Pipe\PipeTypeSpecifier.cs" />
+    <Compile Include="Building\Specifiers\Pipe\PipeInstanceSpecifier.cs" />
+    <Compile Include="Building\Specifiers\IPipeSpecifier.cs" />
+    <Compile Include="Exceptions\InvalidBranchingException.cs" />
+    <Compile Include="Exceptions\PipeliningException.cs" />
+    <Compile Include="Returns\Events\PipelineEvent.cs" />
+    <Compile Include="Returns\Events\PipeException.cs" />
+    <Compile Include="Returns\Events\PipeEnded.cs" />
+    <Compile Include="Returns\Events\PipeStarted.cs" />
+    <Compile Include="Exceptions\IdExistsException.cs" />
+    <Compile Include="Returns\BranchOutput.cs" />
+    <Compile Include="Running\PipelineRun.cs" />
+    <Compile Include="Running\PipeEnumerator.cs" />
+    <Compile Include="Interfaces\IBasePipe.cs" />
+    <Compile Include="Interfaces\IBranchPipe.cs" />
+    <Compile Include="Running\PipelineDetailedRun.cs" />
+    <Compile Include="Building\PipelineBuilder.cs" />
+    <Compile Include="Running\PipelineRunner.cs" />
     <Compile Include="Pipeline.cs" />
-    <Compile Include="Exception\PipelineNotFoundException.cs" />
+    <Compile Include="Exceptions\IdNotFoundException.cs" />
     <Compile Include="PipelineGroup.cs" />
-    <Compile Include="PipelineEnd.cs" />
-    <Compile Include="PipeEnumerator.cs" />
-    <Compile Include="PipeSpecifier.cs" />
-    <Compile Include="Result\PipelineResult.cs" />
-    <Compile Include="Interface\IPipe.cs" />
-    <Compile Include="Result\PipeResult.cs" />
+    <Compile Include="Returns\PipelineEnd.cs" />
+    <Compile Include="Returns\Results\PipelineResult.cs" />
+    <Compile Include="Interfaces\IPipe.cs" />
+    <Compile Include="Returns\Results\PipeResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Trace.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

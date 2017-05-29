@@ -1,64 +1,59 @@
 ﻿namespace PipeliningLibrary
 {
-    using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
+    /// <summary>
+    /// A group of pipelines that can reference each other.
+    /// </summary>
     public class PipelineGroup
     {
+        // The key is the pipeline ID, the value is the pipeline instance.
         private readonly ConcurrentDictionary<string, Pipeline> _pipelines =
             new ConcurrentDictionary<string, Pipeline>();
 
         /// <summary>
-        /// Returns an IEnumerable which each iteration runs the next pipe in the pipeline.
-        /// The "Current" property of the enumerable is the output of the last pipe run.
-        /// </summary>
-        /// <param name="id">Pipeline identifier</param>
-        /// <param name="input">Input for the pipeline</param>
-        /// <returns>An IEnumerable which each iteration runs the next pipe in the pipeline.</returns>
-        public IEnumerable<object> GetEnumerable(string id, object input = null)
-        {
-            return new PipeEnumerator(input, Get(id).Pipes);
-        }
-
-        /// <summary>
         /// Register a new pipeline.
         /// </summary>
-        /// <param name="id">Pipeline identifier</param>
+        /// <param name="id">Pipeline ID</param>
         /// <returns>The registered pipeline instance</returns>
-        public Pipeline Pipeline(string id)
+        /// <exception cref="IdExistsException">
+        /// If there is already a pipeline with the given id in this group
+        /// </exception>
+        public PipelineBuilder Pipeline(string id)
         {
-            var pipeline = new Pipeline(this, id);
+            var pipeline = new Pipeline(id, this);
 
             if (!_pipelines.TryAdd(id, pipeline))
-                throw new PipelineAlreadyRegisteredException(id);
+                throw new IdExistsException(id);
 
-            return pipeline;
+            return new PipelineBuilder(pipeline);
         }
 
         /// <summary>
-        /// Runs the pipeline of the given identifier.
+        /// Gets an object to run the pipeline of the given id.
         /// </summary>
-        /// <param name="id">Pipeline identifier</param>
-        /// <param name="input">Input for the pipeline</param>
-        /// <param name="progress">Optional action to be called with pipeline events</param>
-        /// <param name="scheduler">TaskScheduler to use for this run</param>
-        /// <returns>A Task of the running pipeline with gives a PipelineResult</returns>
-        public Task<PipelineResult> Run(string id, object input = null,
-            Action<PipelineEvent> progress = null, TaskScheduler scheduler = null)
+        /// <param name="id">Pipeline ID</param>
+        /// <returns>An object to run the pipeline of the given id</returns>
+        /// <exception cref="IdNotFoundException">
+        /// If there is no pipeline with the given id in this group
+        /// </exception>
+        public PipelineRunner this[string id]
         {
-            return Get(id).Run(input, progress ?? (p => { }), scheduler ?? TaskScheduler.Default);
+            get
+            {
+                Pipeline pipeline;
+
+                if (_pipelines.TryGetValue(id, out pipeline))
+                    return new PipelineRunner(pipeline);
+                else
+                    throw new IdNotFoundException(id);
+            }
         }
 
+        // Return the pipeline of the given ID
         internal Pipeline Get(string id)
         {
-            Pipeline pipeline;
-
-            if (!_pipelines.TryGetValue(id, out pipeline))
-                throw new PipelineNotFoundException(id);
-
-            return pipeline;
+            return _pipelines[id];
         }
     }
 }

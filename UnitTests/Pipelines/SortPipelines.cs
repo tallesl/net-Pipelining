@@ -1,7 +1,5 @@
-﻿namespace PipeliningLibrary.UnitTests.Pipelines
+﻿namespace PipeliningLibrary.UnitTests
 {
-    using Pipes;
-
     public class SortPipelines : PipelineGroup
     {
         public SortPipelines()

@@ -1,165 +1,55 @@
 ﻿namespace PipeliningLibrary
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Builds and runs pipelines out of pipes.
     /// </summary>
     public sealed partial class Pipeline
     {
-        private readonly string _id;
+        // Pipes of this pipeline.
+        private readonly IList<IPipeSpecifier> _specifiers;
 
-        private readonly PipelineGroup _pipelines;
-
-        internal readonly IList<PipeSpecifier> Pipes;
-
-        internal Pipeline(PipelineGroup pipelines, string id)
+        // Ctor accepting this pipeline ID and group.
+        internal Pipeline(string id, PipelineGroup group)
         {
-            _id = id;
-            _pipelines = pipelines;
-            Pipes = new List<PipeSpecifier>();
+            Id = id;
+            Group = group;
+            _specifiers = new List<IPipeSpecifier>();
         }
 
-        /// <summary>
-        /// Gets the pipes from the given pipeline and sets on this one.
-        /// </summary>
-        /// <param name="id">Id of the pipeline to get the pipes from</param>
-        /// <returns>This pipeline instance</returns>
-        public Pipeline Pipe(string id)
-        {
-            Pipes.Add(new PipeSpecifier(_pipelines, id));
-            return this;
-        }
+        // ID of this pipeline.
+        internal string Id { get; private set; }
 
-        /// <summary>
-        /// Sets the next pipe in the pipeline chain.
-        /// </summary>
-        /// <typeparam name="T">The IPipe to set</typeparam>
-        /// <returns>This pipeline instance</returns>
-        public Pipeline Pipe<T>() where T : IPipe, new()
-        {
-            Pipes.Add(new PipeSpecifier(typeof(T)));
-            return this;
-        }
+        // Group of this pipeline.
+        internal PipelineGroup Group { get; private set; }
 
-        /// <summary>
-        /// Sets the next pipe in the pipeline chain.
-        /// </summary>
-        /// <param name="pipe">The IPipe to set</typeparam>
-        /// <returns>This pipeline instance</returns>
-        public Pipeline Pipe(IPipe pipe)
+        // Gets the pipes of this pipeline.
+        internal IEnumerable<IBasePipe> Pipes
         {
-            Pipes.Add(new PipeSpecifier(pipe));
-            return this;
-        }
-
-        internal Task<PipelineResult> Run(object input, Action<PipelineEvent> progress, TaskScheduler scheduler)
-        {
-            return Task.Factory.StartNew<PipelineResult>(() =>
+            get
             {
-                object output = null;
-                var results = new List<PipeResult>();
+                return _specifiers.SelectMany(s => s.Resolve());
+            }
+        }
 
-                var i = 0;
-                var pipes = Pipes.SelectMany(p => p.Resolve());
+        // Add a branch restriction to the last pipe.
+        // The last pipe must be a branch pipe, else raises an error.
+        internal void AddBranchRestriction(string id)
+        {
+            var last = _specifiers.Last();
 
-                foreach (var pipe in pipes)
-                {
-                    var start = DateTime.UtcNow;
+            if (!(last is IBranchPipeSpecifier))
+                Trace.UnexpectedType(last.GetType());
 
-                    try
-                    {
-                        #region notifying start
+            ((IBranchPipeSpecifier)last).AddRestriction(id);
+        }
 
-                        progress(
-                            new PipeStarted
-                            {
-                                Pipe = pipe.GetType(),
-                                Current = i,
-                            }
-                        );
-
-                        #endregion
-
-                        output = pipe.Run(input);
-
-                        #region notifying end
-
-                        progress(
-                            new PipeEnded
-                            {
-                                Pipe = pipe.GetType(),
-                                Current = i,
-                            }
-                        );
-
-                        #endregion
-                    }
-                    catch (Exception e)
-                    {
-                        #region error result
-
-                        results.Add(
-                            new PipeResult
-                            {
-                                Pipe = pipe.GetType(),
-                                Started = start,
-                                Ended = DateTime.UtcNow,
-                                Exception = e,
-                            }
-                        );
-
-                        #endregion
-
-                        #region notifying exception
-
-                        progress(
-                            new PipeException
-                            {
-                                Exception = e,
-                                Pipe = pipe.GetType(),
-                                Current = i,
-                            }
-                        );
-
-                        #endregion
-
-                        break;
-                    }
-
-                    #region success result
-
-                    results.Add(
-                        new PipeResult
-                        {
-                            Pipe = pipe.GetType(),
-                            Started = start,
-                            Ended = DateTime.UtcNow,
-                        }
-                    );
-
-                    #endregion
-
-                    #region checking for premature end
-
-                    if (output is PipelineEnd)
-                    {
-                        output = ((PipelineEnd)output).Output;
-                        break;
-                    }
-
-                    #endregion
-
-                    input = output;
-                    ++i;
-                }
-
-                return new PipelineResult(_id, output, results.ToArray());
-            }, CancellationToken.None, TaskCreationOptions.None, scheduler);
+        // "Pipes" a pipe to this pipeline.
+        internal void AddPipe(IPipeSpecifier specifier)
+        {
+            _specifiers.Add(specifier);
         }
     }
 }
