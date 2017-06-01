@@ -14,7 +14,7 @@
             var yes = !string.IsNullOrEmpty(read) && char.ToLowerInvariant(read[0]) == 'y';
 
             // Return
-            return yes ? new BranchOutput("guess_a_number") : new BranchOutput();
+            return yes ? new BranchOutput("guess_the_number") : new BranchOutput();
         }
     }
 }
