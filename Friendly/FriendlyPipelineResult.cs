@@ -44,7 +44,7 @@
             else if (pipelineResult.Output is ExpandoObject)
 
                 // we navigate the whole property tree replacing with the "not serializable" message when needed
-                Output = CopyWithSerializableOnly((ExpandoObject)Output, replacement);
+                Output = CopyWithSerializableOnly((ExpandoObject)pipelineResult.Output, replacement);
 
             // if it's serializable
             else if (pipelineResult.Output.GetType().IsSerializable)
