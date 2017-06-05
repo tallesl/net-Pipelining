@@ -36,6 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -56,8 +60,14 @@
   <ItemGroup>
     <Compile Include="Assets\Tamagotchi.cs" />
     <Compile Include="BranchTests.cs" />
+    <Compile Include="FriendlyTestsResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FriendlyTestsResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Pipelines\EmptyPipeline.cs" />
     <Compile Include="Pipes\Text\PickLanguagePipe.cs" />
+    <Compile Include="FriendlyTests.cs" />
     <Compile Include="SimpleTests.cs" />
     <Compile Include="LoopTests.cs" />
     <Compile Include="ExceptionTests.cs" />
@@ -78,10 +88,23 @@
     <Compile Include="EventsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Friendly\Friendly.csproj">
+      <Project>{e8fb574f-1207-42d9-aa25-0dfbb2864792}</Project>
+      <Name>Friendly</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{67f1ab4e-014a-46b0-91ef-a9476f6a6f36}</Project>
       <Name>Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FriendlyTestsResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FriendlyTestsResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
