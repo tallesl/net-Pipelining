@@ -47,10 +47,7 @@
             get { return _current.Output; }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this;
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this;
 
         #endregion
 
@@ -65,10 +62,7 @@
 
         #region IEnumerable<object>
 
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
-        {
-            return this;
-        }
+        IEnumerator<object> IEnumerable<object>.GetEnumerator() => this;
 
         #endregion
     }

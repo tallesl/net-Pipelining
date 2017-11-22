@@ -33,14 +33,13 @@
             {
                 #region notifying start
 
-                if (Progress != null)
-                    Progress(
-                        new PipeStarted
-                        {
-                            Pipe = type,
-                            Current = index(),
-                        }
-                    );
+                Progress?.Invoke(
+                    new PipeStarted
+                    {
+                        Pipe = type,
+                        Current = index(),
+                    }
+                );
 
                 #endregion
 
@@ -52,14 +51,13 @@
 
                 #region notifying end
 
-                if (Progress != null)
-                    Progress(
-                        new PipeEnded
-                        {
-                            Pipe = type,
-                            Current = index(),
-                        }
-                    );
+                Progress?.Invoke(
+                    new PipeEnded
+                    {
+                        Pipe = type,
+                        Current = index(),
+                    }
+                );
 
                 #endregion
 
@@ -94,15 +92,14 @@
 
                 #region notifying exception
 
-                if (Progress != null)
-                    Progress(
-                        new PipeException
-                        {
-                            Exception = e,
-                            Pipe = type,
-                            Current = index(),
-                        }
-                    );
+                Progress?.Invoke(
+                    new PipeException
+                    {
+                        Exception = e,
+                        Pipe = type,
+                        Current = index(),
+                    }
+                );
 
                 #endregion
 

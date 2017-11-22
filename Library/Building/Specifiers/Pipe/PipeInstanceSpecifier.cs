@@ -17,7 +17,7 @@
         // Resolves this specifier returning the encapsulated instance.
         public IEnumerable<IBasePipe> Resolve()
         {
-            return new[] { (IBasePipe)_instance };
+            yield return _instance;
         }
     }
 }

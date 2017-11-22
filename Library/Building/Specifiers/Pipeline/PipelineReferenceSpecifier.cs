@@ -19,9 +19,6 @@
         }
 
         // Resolves this specifier returning the pipes of the encapsulated pipeline.
-        public IEnumerable<IBasePipe> Resolve()
-        {
-            return _group.Get(_id).Pipes;
-        }
+        public IEnumerable<IBasePipe> Resolve() => _group.Get(_id).Pipes;
     }
 }

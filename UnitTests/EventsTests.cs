@@ -63,11 +63,5 @@
 
             Assert.IsFalse(events.Any());
         }
-
-        [TestMethod]
-        public void Branch()
-        {
-
-        }
     }
 }

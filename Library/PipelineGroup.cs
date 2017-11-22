@@ -28,10 +28,7 @@
         /// Imports the pipelines of the given group to this group.
         /// </summary>
         /// <typeparam name="T">Group to import pipelines from</typeparam>
-        public void Import<T>() where T : PipelineGroup, new()
-        {
-            Import(new T());
-        }
+        public void Import<T>() where T : PipelineGroup, new() => Import(new T());
 
         /// <summary>
         /// Register a new pipeline.
@@ -73,9 +70,6 @@
         }
 
         // Returns the pipeline of the given ID.
-        internal Pipeline Get(string id)
-        {
-            return Pipelines[id];
-        }
+        internal Pipeline Get(string id) => Pipelines[id];
     }
 }

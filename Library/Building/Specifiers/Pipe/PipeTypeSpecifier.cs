@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     // A specifier that encapsulates a type (to be instantiated) of a IPipe.
     internal class PipeTypeSpecifier : IPipeSpecifier
@@ -22,10 +21,10 @@
             if (!typeof(IBasePipe).IsAssignableFrom(_type))
             {
                 Trace.UnexpectedType(_type);
-                return Enumerable.Empty<IBasePipe>();
+                yield break;
             }
 
-            return new[] { (IBasePipe)Activator.CreateInstance(_type) };
+            yield return (IBasePipe)Activator.CreateInstance(_type);
         }
     }
 }

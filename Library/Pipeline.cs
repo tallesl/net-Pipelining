@@ -47,9 +47,6 @@
         }
 
         // "Pipes" a pipe to this pipeline.
-        internal void AddPipe(IPipeSpecifier specifier)
-        {
-            _specifiers.Add(specifier);
-        }
+        internal void AddPipe(IPipeSpecifier specifier) => _specifiers.Add(specifier);
     }
 }

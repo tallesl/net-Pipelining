@@ -36,10 +36,8 @@
         /// <param name="input">Input for this run (optional)</param>
         /// <param name="taskFactory">Task factory to use to create this task (optional)</param>
         /// <returns>A task that gives you the result of the run</returns>
-        public Task<object> RunAsync(object input = null, TaskFactory taskFactory = null)
-        {
-            return (taskFactory ?? Task.Factory).StartNew<object>(() => Run(input));
-        }
+        public Task<object> RunAsync(object input = null, TaskFactory taskFactory = null) =>
+            (taskFactory ?? Task.Factory).StartNew(() => Run(input));
 
         /// <summary>
         /// Runs this pipeline giving detailed information as result.
@@ -62,10 +60,8 @@
         /// <param name="taskFactory">Task factory to use to create this task (optional)</param>
         /// <returns>A task that gives you a detailed result of the run</returns>
         public Task<PipelineResult> RunDetailedAsync(
-            object input = null, Action<PipelineEvent> progress = null, TaskFactory taskFactory = null)
-        {
-            return (taskFactory ?? Task.Factory).StartNew<PipelineResult>(() => RunDetailed(input, progress));
-        }
+            object input = null, Action<PipelineEvent> progress = null, TaskFactory taskFactory = null) =>
+            (taskFactory ?? Task.Factory).StartNew(() => RunDetailed(input, progress));
 
         /// <summary>
         /// Runs this pipeline as an enumerable.
@@ -73,9 +69,6 @@
         /// </summary>
         /// <param name="input">Input for this run (optional)</param>
         /// <returns>An enumerable with pipe outputs</returns>
-        public IEnumerable<object> RunAsEnumerable(object input = null)
-        {
-            return new PipeEnumerator(_pipeline, input);
-        }
+        public IEnumerable<object> RunAsEnumerable(object input = null) => new PipeEnumerator(_pipeline, input);
     }
 }

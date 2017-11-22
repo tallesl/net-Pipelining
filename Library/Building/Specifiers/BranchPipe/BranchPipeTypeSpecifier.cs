@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     // A specifier that encapsulates a type (to be instantiated) of a IBranchType.
     internal class BranchPipeTypeSpecifier : IBranchPipeSpecifier
@@ -26,19 +25,14 @@
             if (!typeof(IBranchPipe).IsAssignableFrom(_type))
             {
                 Trace.UnexpectedType(_type);
-                return Enumerable.Empty<IBasePipe>();
+                yield break;
             }
 
             var instance = (IBranchPipe)Activator.CreateInstance(_type);
-            var restrictedBranchPipe = new BranchPipeWrapper(instance, _restrictions);
-
-            return new[] { (IBasePipe)restrictedBranchPipe };
+            yield return new BranchPipeWrapper(instance, _restrictions);
         }
 
         // Adds a branch restriction.
-        public void AddRestriction(string id)
-        {
-            _restrictions.Add(id);
-        }
+        public void AddRestriction(string id) => _restrictions.Add(id);
     }
 }

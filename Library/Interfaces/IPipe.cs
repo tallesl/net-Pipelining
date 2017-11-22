@@ -1,7 +1,5 @@
 ﻿namespace PipeliningLibrary
 {
-    using System;
-
     /// <summary>
     /// Pipe that can be chained into a pipeline.
     /// </summary>

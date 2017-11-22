@@ -1,7 +1,6 @@
 ﻿namespace PipeliningLibrary
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     // A specifier that encapsulates an instance of IBranchType.
     internal class BranchPipeInstanceSpecifier : IBranchPipeSpecifier
@@ -22,15 +21,10 @@
         // Resolves this specifier returning the encapsulated instance.
         public IEnumerable<IBasePipe> Resolve()
         {
-            var instance = _instance;
-            var restrictedBranchPipe = new BranchPipeWrapper(_instance, _restrictions);
-            return new[] { (IBasePipe)restrictedBranchPipe };
+            yield return new BranchPipeWrapper(_instance, _restrictions);
         }
 
         // Adds a branch restriction.
-        public void AddRestriction(string id)
-        {
-            _restrictions.Add(id);
-        }
+        public void AddRestriction(string id) => _restrictions.Add(id);
     }
 }

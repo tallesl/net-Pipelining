@@ -48,10 +48,7 @@
         internal IEnumerator<IBasePipe> PendingPipes { get; set; }
 
         // Empties the pending to run pipes of this run.
-        internal void ClearPending()
-        {
-            PendingPipes = Enumerable.Empty<IBasePipe>().GetEnumerator();
-        }
+        internal void ClearPending() => PendingPipes = Enumerable.Empty<IBasePipe>().GetEnumerator();
 
         // Runs all pending pipes.
         internal void RunAll()

@@ -19,7 +19,7 @@
         internal BranchPipeWrapper(IBranchPipe pipe, IEnumerable<string> restrictions)
         {
             _pipe = pipe;
-            _restrictions = (restrictions ?? new string[0]).ToArray();
+            _restrictions = restrictions?.ToArray() ?? new string[0];
         }
 
         // Type of the wrapped IBranchPipe.
@@ -32,15 +32,9 @@
         }
 
         // True if branching to the given pipeline ID is allowed.
-        internal bool CanBranch(string id)
-        {
-            return _restrictions.Any() ? _restrictions.Contains(id) : true;
-        }
+        internal bool CanBranch(string id) => _restrictions.Any() ? _restrictions.Contains(id) : true;
 
         // Just runs and returns the wrapped IBranchPipe.
-        BranchOutput IBranchPipe.Run(object input)
-        {
-            return _pipe.Run(input);
-        }
+        BranchOutput IBranchPipe.Run(object input) => _pipe.Run(input);
     }
 }
