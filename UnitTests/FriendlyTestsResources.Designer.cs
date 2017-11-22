@@ -127,6 +127,31 @@ namespace PipeliningLibrary.UnitTests {
         /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;Id&quot;: &quot;some_id&quot;,
+        ///  &quot;Output&quot;: {
+        ///    &quot;NullProperty&quot;: null
+        ///  },
+        ///  &quot;Success&quot;: true,
+        ///  &quot;ElapsedTime&quot;: &quot;00:00:01&quot;,
+        ///  &quot;Pipes&quot;: [
+        ///    {
+        ///      &quot;Pipe&quot;: &quot;PipeliningLibrary.UnitTests.BubbleSortPipe&quot;,
+        ///      &quot;Started&quot;: &quot;2017-06-05T15:16:17&quot;,
+        ///      &quot;Ended&quot;: &quot;2017-06-05T15:16:18&quot;,
+        ///      &quot;Exception&quot;: null,
+        ///      &quot;Position&quot;: 0
+        ///    }
+        ///  ]
+        ///}.
+        /// </summary>
+        internal static string NullProperty {
+            get {
+                return ResourceManager.GetString("NullProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;Id&quot;: &quot;some_id&quot;,
         ///  &quot;Output&quot;: [
         ///    1,
         ///    2,

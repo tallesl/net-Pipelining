@@ -101,7 +101,7 @@
                     if (innerExpando == null)
                     {
                         // if it's not serializable
-                        if (!kvp.Value.GetType().IsSerializable)
+                        if (kvp.Value?.GetType().IsSerializable == false)
 
                             // we use the replacement
                             dict[kvp.Key] = replacement;

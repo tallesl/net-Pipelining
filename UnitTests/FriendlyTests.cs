@@ -82,5 +82,18 @@
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void NullProperty()
+        {
+            var expando = new ExpandoObject();
+
+            ((dynamic)expando).NullProperty = null;
+
+            var actual = NormalizeLineEndings(Json(Result(expando)));
+            var expected = NormalizeLineEndings(FriendlyTestsResources.NullProperty);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

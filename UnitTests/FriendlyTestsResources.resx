@@ -163,6 +163,25 @@
   ]
 }</value>
   </data>
+  <data name="NullProperty" xml:space="preserve">
+    <value>{
+  "Id": "some_id",
+  "Output": {
+    "NullProperty": null
+  },
+  "Success": true,
+  "ElapsedTime": "00:00:01",
+  "Pipes": [
+    {
+      "Pipe": "PipeliningLibrary.UnitTests.BubbleSortPipe",
+      "Started": "2017-06-05T15:16:17",
+      "Ended": "2017-06-05T15:16:18",
+      "Exception": null,
+      "Position": 0
+    }
+  ]
+}</value>
+  </data>
   <data name="Serializable" xml:space="preserve">
     <value>{
   "Id": "some_id",
