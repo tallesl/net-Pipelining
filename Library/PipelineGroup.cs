@@ -8,8 +8,30 @@
     public class PipelineGroup
     {
         // The key is the pipeline ID, the value is the pipeline instance.
-        private readonly ConcurrentDictionary<string, Pipeline> _pipelines =
+        protected readonly ConcurrentDictionary<string, Pipeline> Pipelines =
             new ConcurrentDictionary<string, Pipeline>();
+
+        /// <summary>
+        /// Imports the pipelines of the given group to this group.
+        /// </summary>
+        /// <param name="pipelineGroup">Group to import pipelines from</param>
+        public void Import(PipelineGroup pipelineGroup)
+        {
+            foreach (var kvp in pipelineGroup.Pipelines)
+            {
+                if (!Pipelines.TryAdd(kvp.Key, kvp.Value))
+                    throw new IdExistsException(kvp.Key);
+            }
+        }
+
+        /// <summary>
+        /// Imports the pipelines of the given group to this group.
+        /// </summary>
+        /// <typeparam name="T">Group to import pipelines from</typeparam>
+        public void Import<T>() where T : PipelineGroup, new()
+        {
+            Import(new T());
+        }
 
         /// <summary>
         /// Register a new pipeline.
@@ -23,7 +45,7 @@
         {
             var pipeline = new Pipeline(id, this);
 
-            if (!_pipelines.TryAdd(id, pipeline))
+            if (!Pipelines.TryAdd(id, pipeline))
                 throw new IdExistsException(id);
 
             return new PipelineBuilder(pipeline);
@@ -43,17 +65,17 @@
             {
                 Pipeline pipeline;
 
-                if (_pipelines.TryGetValue(id, out pipeline))
+                if (Pipelines.TryGetValue(id, out pipeline))
                     return new PipelineRunner(pipeline);
                 else
                     throw new IdNotFoundException(id);
             }
         }
 
-        // Return the pipeline of the given ID
+        // Returns the pipeline of the given ID.
         internal Pipeline Get(string id)
         {
-            return _pipelines[id];
+            return Pipelines[id];
         }
     }
 }
