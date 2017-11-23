@@ -12,13 +12,13 @@
         private readonly PipelineGroup _group;
 
         // Ctor accepting the ID and the group of the pipeline to be encapsulated.
-        public PipelineReferenceSpecifier(string id, PipelineGroup group)
+        internal PipelineReferenceSpecifier(string id, PipelineGroup group)
         {
             _id = id;
             _group = group;
         }
 
         // Resolves this specifier returning the pipes of the encapsulated pipeline.
-        public IEnumerable<IBasePipe> Resolve() => _group.Get(_id).Pipes;
+        IEnumerable<IBasePipe> IPipeSpecifier.Resolve() => _group.Get(_id).Pipes;
     }
 }

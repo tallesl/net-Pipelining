@@ -25,6 +25,6 @@
         }
 
         // Adds a branch restriction.
-        public void AddRestriction(string id) => _restrictions.Add(id);
+        void IBranchPipeSpecifier.AddRestriction(string id) => _restrictions.Add(id);
     }
 }

@@ -39,5 +39,22 @@
             pipelineBuilder(_pipeline.Group.Pipeline(id));
             return this;
         }
+
+        /// <summary>
+        /// Sets that this pipeline can branch to specified pipeline.
+        /// </summary>
+        /// <param name="id">ID of the pipeline that it can branch to</param>
+        /// <returns>This builder instance, so you can use it in a fluent fashion</returns>
+        public BranchBuilder BranchTo(Enum id) => BranchTo(id.ToString());
+
+
+        /// <summary>
+        /// Sets that this pipeline can branch to specified pipeline.
+        /// </summary>
+        /// <param name="id">ID of the pipeline been constructed by this call</param>
+        /// <param name="pipelineBuilder">An action that builds a whole new pipeline</param>
+        /// <returns>This builder instance, so you can use it in a fluent fashion</returns>
+        public BranchBuilder BranchTo(Enum id, Action<PipelineBuilder> pipelineBuilder) =>
+            BranchTo(id.ToString(), pipelineBuilder);
     }
 }

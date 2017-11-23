@@ -1,5 +1,7 @@
 ﻿namespace PipeliningLibrary
 {
+    using System;
+
     /// <summary>
     /// Output of a branch pipe.
     /// Contains an ID of the pipeline to branch to and an output object.
@@ -11,13 +13,14 @@
         /// Constructor used when it's suppose to end the pipeline.
         /// Sets null as the output.
         /// </summary>
-        public BranchOutput() : this(null, new PipelineEnd(null)) { }
+        public BranchOutput() : this((string)null, new PipelineEnd(null)) { }
 
         /// <summary>
         /// Constructor used when it's suppose to end the pipeline.
         /// </summary>
         /// <param name="output">Output object of the pipeline</param>
-        public BranchOutput(object output) : this(null, output is PipelineEnd ? output : new PipelineEnd(output)) { }
+        public BranchOutput(object output) :
+            this((string)null, output is PipelineEnd ? output : new PipelineEnd(output)) { }
 
         /// <summary>
         /// Constructor used to branch the pipeline execution.
@@ -46,6 +49,20 @@
             Id = id;
             Output = output;
         }
+
+        /// <summary>
+        /// Constructor used to branch the pipeline execution.
+        /// Sets null as the output.
+        /// </summary>
+        /// <param name="id">ID of the pipeline to branch to</param>
+        public BranchOutput(Enum id) : this(id, null) { }
+
+        /// <summary>
+        /// Constructor used to branch the pipeline execution.
+        /// </summary>
+        /// <param name="id">ID of the pipeline to branch to</param>
+        /// <param name="output">Output object of the pipeline</param>
+        public BranchOutput(Enum id, object output) : this(id.ToString(), output) { }
 
         // ID of the pipeline to branch to. Null if output is PipelineEnd.
         internal string Id { get; private set; }

@@ -1,5 +1,6 @@
 ﻿namespace PipeliningLibrary
 {
+    using System;
     using System.Collections.Concurrent;
 
     /// <summary>
@@ -49,6 +50,16 @@
         }
 
         /// <summary>
+        /// Register a new pipeline.
+        /// </summary>
+        /// <param name="id">Pipeline ID</param>
+        /// <returns>The registered pipeline instance</returns>
+        /// <exception cref="IdExistsException">
+        /// If there is already a pipeline with the given id in this group
+        /// </exception>
+        public PipelineBuilder Pipeline(Enum id) => Pipeline(id.ToString());
+
+        /// <summary>
         /// Gets an object to run the pipeline of the given id.
         /// </summary>
         /// <param name="id">Pipeline ID</param>
@@ -69,7 +80,20 @@
             }
         }
 
+        /// <summary>
+        /// Gets an object to run the pipeline of the given id.
+        /// </summary>
+        /// <param name="id">Pipeline ID</param>
+        /// <returns>An object to run the pipeline of the given id</returns>
+        /// <exception cref="IdNotFoundException">
+        /// If there is no pipeline with the given id in this group
+        /// </exception>
+        public PipelineRunner this[Enum id] => this[id.ToString()];
+
         // Returns the pipeline of the given ID.
         internal Pipeline Get(string id) => Pipelines[id];
+
+        // Returns the pipeline of the given ID.
+        internal Pipeline Get(Enum id) => Pipelines[id.ToString()];
     }
 }
