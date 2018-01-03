@@ -92,8 +92,5 @@
 
         // Returns the pipeline of the given ID.
         internal Pipeline Get(string id) => Pipelines[id];
-
-        // Returns the pipeline of the given ID.
-        internal Pipeline Get(Enum id) => Pipelines[id.ToString()];
     }
 }
