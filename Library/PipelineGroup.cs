@@ -9,7 +9,7 @@
     public class PipelineGroup
     {
         // The key is the pipeline ID, the value is the pipeline instance.
-        protected readonly ConcurrentDictionary<string, Pipeline> Pipelines =
+        private readonly ConcurrentDictionary<string, Pipeline> _pipelines =
             new ConcurrentDictionary<string, Pipeline>();
 
         /// <summary>
@@ -18,9 +18,9 @@
         /// <param name="pipelineGroup">Group to import pipelines from</param>
         public void Import(PipelineGroup pipelineGroup)
         {
-            foreach (var kvp in pipelineGroup.Pipelines)
+            foreach (var kvp in pipelineGroup._pipelines)
             {
-                if (!Pipelines.TryAdd(kvp.Key, kvp.Value))
+                if (!_pipelines.TryAdd(kvp.Key, kvp.Value))
                     throw new IdExistsException(kvp.Key);
             }
         }
@@ -43,7 +43,7 @@
         {
             var pipeline = new Pipeline(id, this);
 
-            if (!Pipelines.TryAdd(id, pipeline))
+            if (!_pipelines.TryAdd(id, pipeline))
                 throw new IdExistsException(id);
 
             return new PipelineBuilder(pipeline);
@@ -73,7 +73,7 @@
             {
                 Pipeline pipeline;
 
-                if (Pipelines.TryGetValue(id, out pipeline))
+                if (_pipelines.TryGetValue(id, out pipeline))
                     return new PipelineRunner(pipeline);
                 else
                     throw new IdNotFoundException(id);
@@ -91,6 +91,6 @@
         public PipelineRunner this[Enum id] => this[id.ToString()];
 
         // Returns the pipeline of the given ID.
-        internal Pipeline Get(string id) => Pipelines[id];
+        internal Pipeline Get(string id) => _pipelines[id];
     }
 }
