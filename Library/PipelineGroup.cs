@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A group of pipelines that can reference each other.
@@ -58,6 +59,14 @@
         /// If there is already a pipeline with the given id in this group
         /// </exception>
         public PipelineBuilder Pipeline(Enum id) => Pipeline(id.ToString());
+
+        /// <summary>
+        /// IDs of the pipelines registered in this group.
+        /// </summary>
+        public IEnumerable<string> RegisteredIds
+        {
+            get { return _pipelines.Keys; }
+        }
 
         /// <summary>
         /// Gets an object to run the pipeline of the given id.
