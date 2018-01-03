@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FriendlyTestsResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ImportTests.cs" />
     <Compile Include="Pipelines\EmptyPipeline.cs" />
     <Compile Include="Pipes\Text\PickLanguagePipe.cs" />
     <Compile Include="FriendlyTests.cs" />
