@@ -97,7 +97,7 @@
                         var pipeline = Pipeline.Group.Get(branchResult.Id);
 
                         // and set the pending pipes to run to be the branched pipeline pipes
-                        PendingPipes = pipeline.Pipes.GetEnumerator();
+                        PendingPipes = Concat(pipeline.Pipes.GetEnumerator(), PendingPipes).GetEnumerator();
                     }
                     else
                     {
@@ -113,6 +113,15 @@
             else
             {
                 Trace.UnexpectedType(currentPipe.GetType());
+            }
+        }
+
+        private IEnumerable<T> Concat<T>(params IEnumerator<T>[] enumerators)
+        {
+            foreach (var e in enumerators)
+            {
+                while (e.MoveNext())
+                    yield return e.Current;
             }
         }
     }

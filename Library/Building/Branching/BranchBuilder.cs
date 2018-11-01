@@ -5,13 +5,13 @@
     /// <summary>
     /// Builds branch paths in pipelines.
     /// </summary>
-    public class BranchBuilder
+    public class BranchBuilder : PipelineBuilder
     {
         // The pipeline been constructed.
         private readonly Pipeline _pipeline;
 
         // Ctor accepting the pipeline been constructed.
-        internal BranchBuilder(Pipeline pipeline)
+        internal BranchBuilder(Pipeline pipeline) : base(pipeline)
         {
             _pipeline = pipeline;
         }
